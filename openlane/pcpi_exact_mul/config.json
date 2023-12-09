@@ -1,0 +1,31 @@
+{
+	"PDK": "gf180mcuD",
+	"STD_CELL_LIBRARY": "gf180mcu_fd_sc_mcu7t5v0",
+	"DESIGN_NAME": "pcpi_exact_mul",
+	"VERILOG_FILES": [
+		"dir::../../verilog/rtl/pcpi_exact_mul.v",
+		"dir::../../verilog/rtl/S_Exact8.v",
+		"dir::../../verilog/rtl/scdm_common.v"
+	],
+	"DESIGN_IS_CORE": 0,
+	"CLOCK_PORT": "clk",
+	"CLOCK_PERIOD": "100",
+	"FP_SIZING": "absolute",
+	"DIE_AREA": "0 0 300 300",
+
+	"RT_MAX_LAYER": "Metal4",
+	"FP_PDN_CORE_RING": 0,
+
+	"VDD_NETS": [
+		"vdd"
+	],
+	"GND_NETS": [
+		"vss"
+	],
+	"MAX_FANOUT_CONSTRAINT": 4,
+	"BASE_SDC_FILE": "dir::pcpi_exact_mul.sdc",
+	"RUN_CVC": 1,
+	"QUIT_ON_LINTER_ERRORS": 0,
+	"SYNTH_USE_PG_PINS_DEFINES": "USE_POWER_PINS"
+
+}

@@ -6,23 +6,62 @@
 		"dir::../../verilog/rtl/defines.v",
 		"dir::../../verilog/rtl/user_project_wrapper.v"
 	],
-	"CLOCK_PORT": "wb_clk_i",
-	"CLOCK_NET": "mprj.clk",
+	"CLOCK_PORT": "io_in[8]",
+	"CLOCK_NET": "io_in[8]",
 	"CLOCK_PERIOD": 25,
-	"MACRO_PLACEMENT_CFG": "dir::macro.cfg",
 	"VERILOG_FILES_BLACKBOX": [
+		"dir::../../verilog/gl/cpu.v",
+		"dir::../../verilog/gl/gf180_ram_512x8x1.v",
+		"dir::../../verilog/gl/simpleuart.v",
+		"dir::../../verilog/gl/spimemio.v",
+		"dir::../../verilog/gl/simple_interconnect.v",
+		"dir::../../verilog/gl/ctrl.v",
+		"dir::../../verilog/gl/pcpi_mul.v",
+		"dir::../../verilog/gl/pcpi_div.v",
+		"dir::../../verilog/gl/pcpi_exact_mul.v",
+		"dir::../../verilog/gl/pcpi_approx_mul.v",
 		"dir::../../verilog/gl/user_proj_example.v"
 	],
-	"EXTRA_LEFS": "dir::../../lef/user_proj_example.lef",
-	"EXTRA_GDS_FILES": "dir::../../gds/user_proj_example.gds",
-	"EXTRA_LIBS": "dir::../../lib/user_proj_example.lib",
-	"EXTRA_SPEFS": [
-		"user_proj_example",
-		"dir::../../spef/multicorner/user_proj_example.min.spef",
-		"dir::../../spef/multicorner/user_proj_example.nom.spef",
-		"dir::../../spef/multicorner/user_proj_example.max.spef"
+	"EXTRA_LEFS": [ "dir::../../lef/cpu.lef",
+		"dir::../../lef/gf180_ram_512x8x1.lef",
+		"dir::../../lef/simpleuart.lef",
+		"dir::../../lef/spimemio.lef",
+		"dir::../../lef/simple_interconnect.lef",
+		"dir::../../lef/ctrl.lef",
+		"dir::../../lef/pcpi_mul.lef",
+		"dir::../../lef/pcpi_div.lef",
+		"dir::../../lef/pcpi_exact_mul.lef",
+		"dir::../../lef/pcpi_approx_mul.lef",
+		"dir::../../lef/user_proj_example.lef"
+
 	],
-	"FP_PDN_MACRO_HOOKS": "mprj vdd vss vdd vss",
+	"EXTRA_GDS_FILES": [ "dir::../../gds/cpu.gds",
+		"dir::../../gds/gf180_ram_512x8x1.gds",
+		"dir::../../gds/simpleuart.gds",
+		"dir::../../gds/spimemio.gds",
+		"dir::../../gds/simple_interconnect.gds",
+		"dir::../../gds/ctrl.gds",
+		"dir::../../gds/pcpi_mul.gds",
+		"dir::../../gds/pcpi_div.gds",
+		"dir::../../gds/pcpi_exact_mul.gds",
+		"dir::../../gds/pcpi_approx_mul.gds",
+		"dir::../../gds/user_proj_example.gds"
+
+	],
+	"EXTRA_LIBS": [ "dir::../../lib/cpu.lib",
+		"dir::../../lib/gf180_ram_512x8x1.lib",
+		"dir::../../lib/simpleuart.lib",
+		"dir::../../lib/spimemio.lib",
+		"dir::../../lib/simple_interconnect.lib",
+		"dir::../../lib/ctrl.lib",
+		"dir::../../lib/pcpi_mul.lib",
+		"dir::../../lib/pcpi_div.lib",
+		"dir::../../lib/pcpi_exact_mul.lib",
+		"dir::../../lib/pcpi_approx_mul.lib",
+		"dir::../../lib/user_proj_example.lib"
+	],
+
+	"FP_PDN_MACRO_HOOKS": "cpu_inst_0 vdd vss vdd vss, simple_interconnect_inst_0 vdd vss vdd vss, ctrl_inst_0 vdd vss vdd vss, sram512x8_0 vdd vss VDD VSS, sram512x8_1 vdd vss VDD VSS, sram512x8_2 vdd vss VDD VSS, sram512x8_3 vdd vss VDD VSS, simpleuart vdd vss vdd vss, spimemio vdd vss vdd vss, pcpi_mul_inst_0 vdd vss vdd vss, pcpi_div_inst_0 vdd vss vdd vss, user_proj_example_inst_0 vdd vss vdd vss, pcpi_exact_mul_inst_0 vdd vss vdd vss, pcpi_approx_mul_inst_0 vdd vss vdd vss",
 	"QUIT_ON_SYNTH_CHECKS": 0,
 	"FP_PDN_CHECK_NODES": 0,
 	"SYNTH_ELABORATE_ONLY": 1,
@@ -77,5 +116,7 @@
 	"RUN_LINTER": 0,
 	"FP_DEF_TEMPLATE": "dir::fixed_dont_change/user_project_wrapper.def",
     "BASE_SDC_FILE": "dir::base_user_project_wrapper.sdc",
-    "SIGNOFF_SDC_FILE": "dir::signoff.sdc"
+    "SIGNOFF_SDC_FILE": "dir::signoff.sdc",
+
+	"MACRO_PLACEMENT_CFG": "dir::macro.cfg"
 }

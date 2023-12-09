@@ -1,4 +1,8 @@
 {
+    "SRAM_MACRO": "sram512x8m8wm1",
+    "INCLUDE_CONFIGS": [
+            "$LVS_ROOT/tech/$PDK/lvs_config.sram.json"
+    ],
     "TOP_SOURCE": "user_project_wrapper",
     "TOP_LAYOUT": "$TOP_SOURCE",
     "EXTRACT_FLATGLOB": [
@@ -22,6 +26,17 @@
         "$PDK_ROOT/$PDK/libs.ref/gf180mcu_fd_sc_mcu7t5v0/spice/gf180mcu_fd_sc_mcu7t5v0.spice"
     ],
     "LVS_VERILOG_FILES": [
+        "$UPRJ_ROOT/verilog/gl/cpu.v",
+        "$UPRJ_ROOT/verilog/gl/simple_interconnect.v",
+        "$UPRJ_ROOT/verilog/gl/spimemio.v",
+        "$UPRJ_ROOT/verilog/gl/simpleuart.v",
+        "$UPRJ_ROOT/verilog/gl/ctrl.v",
+        "$UPRJ_ROOT/verilog/rtl/gf180mcu_fd_ip_sram__sram512x8m8wm1.v",
+        "$UPRJ_ROOT/verilog/gl/gf180_ram_512x8x1.v",
+        "$UPRJ_ROOT/verilog/gl/pcpi_mul.v",
+        "$UPRJ_ROOT/verilog/gl/pcpi_div.v",
+        "$UPRJ_ROOT/verilog/gl/pcpi_exact_mul.v",
+        "$UPRJ_ROOT/verilog/gl/pcpi_approx_mul.v",
         "$UPRJ_ROOT/verilog/gl/user_proj_example.v",
         "$UPRJ_ROOT/verilog/gl/$TOP_SOURCE.v"
     ],

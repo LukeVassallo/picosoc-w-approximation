@@ -36,7 +36,7 @@
  */
 
 module user_proj_example #(
-    parameter BITS = 16
+    parameter BITS = 8
 )(
 `ifdef USE_POWER_PINS
     inout vdd,	// User area 1 1.8V supply
@@ -145,7 +145,7 @@ module counter #(
                 ready <= 1'b1;
                 rdata <= count;
                 if (wstrb[0]) count[7:0]   <= wdata[7:0];
-                if (wstrb[1]) count[15:8]  <= wdata[15:8];
+                //if (wstrb[1]) count[15:8]  <= wdata[15:8];
             end else if (|la_write) begin
                 count <= la_write & la_input;
             end

@@ -69,12 +69,354 @@ module user_project_wrapper #(
 /*--------------------------------------*/
 /* User project is instantiated  here   */
 /*--------------------------------------*/
+	// rst
+	wire reset, resetn;
 
-user_proj_example mprj (
+	// cpu to interconnect
+	wire mem_valid;
+	wire mem_instr;
+	wire mem_ready;
+	wire [31:0] mem_addr;
+	wire [31:0] mem_wdata;
+	wire [3:0] mem_wstrb;
+	wire [31:0] mem_rdata;
+
+	// spi
+	wire spimem_ready;
+	wire [31:0] spimem_rdata;
+	wire [3:0] spimemio_cfgreg_we;
+	wire [31:0] spimemio_cfgreg_do;
+	wire spimem_valid;	
+	
+	// simple uart
+	wire [3:0] simpleuart_div_we;
+	wire [31:0] simpleuart_reg_div_do;
+
+	wire simpleuart_dat_we;
+	wire simpleuart_dat_re;
+	wire [31:0] simpleuart_reg_dat_do;
+	wire simpleuart_reg_dat_wait;
+
+	// SRAM
+	wire [31:0] ram_rdata;
+	wire [3:0] ram_gwenb;
+	wire [31:0] ram_wenb;
+
+
+	wire pcpi_valid;
+	wire [31:0] pcpi_insn;
+	wire [31:0] pcpi_rs1;
+	wire [31:0] pcpi_rs2;
+	wire pcpi_wr;
+	wire [31:0] pcpi_rd;
+	wire pcpi_wait;
+	wire pcpi_ready;
+
+	cpu cpu_inst_0 (
+	`ifdef USE_POWER_PINS
+		.vdd    (vdd),
+		.vss    (vss),
+	`endif
+		.clk         (io_in[8]        ),
+		.resetn      (resetn     ),
+		.mem_valid   (mem_valid  ),
+		.mem_instr   (mem_instr  ),
+		.mem_ready   (mem_ready  ),
+		.mem_addr    (mem_addr   ),
+		.mem_wdata   (mem_wdata  ),
+		.mem_wstrb   (mem_wstrb  ),
+		.mem_rdata   (mem_rdata  ),
+
+		.irq_in(io_in[21:18]),
+		.irq_out(io_out[21:18]),
+		.irq_oeb(io_oeb[21:18]),
+
+		.pcpi_valid(pcpi_valid),
+	 	.pcpi_insn(pcpi_insn),
+		.pcpi_rs1(pcpi_rs1),
+		.pcpi_rs2(pcpi_rs2),
+		// .pcpi_wr(pcpi_wr),
+		// .pcpi_rd(pcpi_rd),
+		// .pcpi_wait(pcpi_wait),
+		// .pcpi_ready(pcpi_ready),
+
+		// picorv32 mul
+		.pcpi_mul_wr(pcpi_mul_wr),
+		.pcpi_mul_rd(pcpi_mul_rd),
+		.pcpi_mul_wait(pcpi_mul_wait),
+		.pcpi_mul_ready(pcpi_mul_ready),
+
+		// picorv32 div
+		.pcpi_div_wr(pcpi_div_wr),
+		.pcpi_div_rd(pcpi_div_rd),
+		.pcpi_div_wait(pcpi_div_wait),
+		.pcpi_div_ready(pcpi_div_ready),
+
+		.pcpi_exact_mul_wr(pcpi_exact_mul_wr),
+		.pcpi_exact_mul_rd(pcpi_exact_mul_rd),
+		.pcpi_exact_mul_wait(pcpi_exact_mul_wait),
+		.pcpi_exact_mul_ready(pcpi_exact_mul_ready),
+
+		.pcpi_approx_mul_wr(pcpi_approx_mul_wr),
+		.pcpi_approx_mul_rd(pcpi_approx_mul_rd),
+		.pcpi_approx_mul_wait(pcpi_approx_mul_wait),
+	    .pcpi_approx_mul_ready(pcpi_approx_mul_ready)	
+	);
+
+	wire pcpi_exact_mul_wr, pcpi_approx_mul_wr;
+	wire [31:0] pcpi_exact_mul_rd, pcpi_approx_mul_rd;
+	wire pcpi_exact_mul_wait, pcpi_approx_mul_wait;
+	wire pcpi_exact_mul_ready, pcpi_approx_mul_ready;
+
+	simple_interconnect simple_interconnect_inst_0(
+	`ifdef USE_POWER_PINS
+		.vdd    (vdd),
+		.vss    (vss),
+	`endif		
+		.clk(io_in[8]),
+		.resetn(resetn),
+
+		.gpio_in(io_in[37:22]),
+		.gpio_out(io_out[37:22]),
+		.gpio_oeb(io_oeb[37:22]),
+
+		.mem_valid(mem_valid),
+		.mem_instr(mem_instr),
+		.mem_ready(mem_ready),
+
+		.mem_addr(mem_addr),
+		.mem_wdata(mem_wdata),
+		.mem_wstrb(mem_wstrb),
+		.mem_rdata(mem_rdata),
+
+    	.spimem_ready(spimem_ready),
+		.spimem_valid(spimem_valid),
+		.spimem_rdata(spimem_rdata),
+		.spimemio_cfgreg_we(spimemio_cfgreg_we),
+		.spimemio_cfgreg_do(spimemio_cfgreg_do),
+
+		.simpleuart_div_we(simpleuart_div_we),
+		.simpleuart_reg_div_do(simpleuart_reg_div_do),
+
+		.simpleuart_dat_we(simpleuart_dat_we),
+		.simpleuart_dat_re(simpleuart_dat_re),
+
+		.simpleuart_reg_dat_do(simpleuart_reg_dat_do),
+		.simpleuart_reg_dat_wait(simpleuart_reg_dat_wait),
+
+		.ram_rdata(ram_rdata),
+		.ram_wenb(ram_wenb),
+		.ram_gwenb(ram_gwenb)
+
+);
+
+	spimemio spimemio (
+	`ifdef USE_POWER_PINS
+		.vdd    (vdd),
+		.vss    (vss),
+	`endif		
+		.clk    (io_in[8]),
+		.resetn (resetn),
+		.valid  (spimem_valid),
+		.ready  (spimem_ready),
+		.addr   (mem_addr[23:0]),
+		.rdata  (spimem_rdata),
+
+		// 15: io[3]
+		// ...
+		// 12: io[0]
+		// 11: flash_clk
+		// 10: flash_csb
+		.flash_in(io_in[15:10]),
+		.flash_out(io_out[15:10]),
+		.flash_oeb(io_oeb[15:10]),
+
+		.cfgreg_we(spimemio_cfgreg_we),
+		.cfgreg_di(mem_wdata),
+		.cfgreg_do(spimemio_cfgreg_do)
+	);
+
+		simpleuart simpleuart (
+	`ifdef USE_POWER_PINS
+		.vdd    (vdd),
+		.vss    (vss),
+	`endif			
+		.clk         (io_in[8]    ),
+		.resetn      (resetn      ),
+
+		.uart_in(io_in[17:16]),
+		.uart_out(io_out[17:16]),
+		.uart_oeb(io_oeb[17:16]),
+
+		.reg_div_we  (simpleuart_div_we),
+		.reg_div_di  (mem_wdata),
+		.reg_div_do  (simpleuart_reg_div_do),
+
+		.reg_dat_we  (simpleuart_dat_we),
+		.reg_dat_re  (simpleuart_dat_re),
+		.reg_dat_di  (mem_wdata),
+		.reg_dat_do  (simpleuart_reg_dat_do),
+		.reg_dat_wait(simpleuart_reg_dat_wait)
+	);
+
+ctrl ctrl_inst_0 (
+	`ifdef USE_POWER_PINS
+		.vdd    (vdd),
+		.vss    (vss),
+	`endif
+		// .nc_in(io_in[7:0]),
+		// .nc_out(io_out[7:0]),
+		// .nc_oeb(io_oeb[7:0]),
+
+		.ctrl_in(io_in[9:8]),
+		.ctrl_out(io_out[9:8]),
+		.ctrl_oeb(io_oeb[9:8]),
+
+		.resetn(resetn),
+		.reset(reset)		
+);
+
+gf180_ram_512x8x1 sram512x8_0 (
 `ifdef USE_POWER_PINS
-	.vdd(vdd),	// User area 1 1.8V power
-	.vss(vss),	// User area 1 digital ground
+    .VDD    (vdd),
+    .VSS    (vss),
 `endif
+    .clk(io_in[8]),
+    .cen(reset),
+    .gwen(ram_gwenb[0]),
+    .wen(ram_wenb[7:0]),
+    .addr(mem_addr[10:2]),
+    .wdata(mem_wdata[7:0]),
+    .rdata(ram_rdata[7:0])
+);
+
+gf180_ram_512x8x1 sram512x8_1 (
+`ifdef USE_POWER_PINS
+    .VDD    (vdd),
+    .VSS    (vss),
+`endif
+    .clk(io_in[8]),
+    .cen(reset),
+    .gwen(ram_gwenb[1]),
+    .wen(ram_wenb[15:8]),
+    .addr(mem_addr[10:2]),
+    .wdata(mem_wdata[15:8]),
+    .rdata(ram_rdata[15:8])
+);
+
+gf180_ram_512x8x1 sram512x8_2 (
+`ifdef USE_POWER_PINS
+    .VDD    (vdd),
+    .VSS    (vss),
+`endif
+    .clk(io_in[8]),
+    .cen(reset),
+    .gwen(ram_gwenb[2]),
+    .wen(ram_wenb[23:16]),
+    .addr(mem_addr[10:2]),
+    .wdata(mem_wdata[23:16]),
+    .rdata(ram_rdata[23:16])
+);
+
+gf180_ram_512x8x1 sram512x8_3 (
+`ifdef USE_POWER_PINS
+    .VDD    (vdd),
+    .VSS    (vss),
+`endif
+    .clk(io_in[8]),
+    .cen(reset),
+	.gwen(ram_gwenb[3]),
+    .wen(ram_wenb[31:24]),
+    .addr(mem_addr[10:2]),    
+    .wdata(mem_wdata[31:24]),
+    .rdata(ram_rdata[31:24])
+);
+
+wire pcpi_mul_wr;
+wire [31:0] pcpi_mul_rd;
+wire pcpi_mul_wait;
+wire pcpi_mul_ready;
+
+pcpi_mul pcpi_mul_inst_0 (
+		`ifdef USE_POWER_PINS
+		.vdd    (vdd),
+		.vss    (vss),
+	`endif
+	.clk(io_in[8]),
+	.resetn(resetn),
+	.pcpi_mul_valid(pcpi_valid),
+	.pcpi_insn(pcpi_insn),
+	.pcpi_rs1(pcpi_rs1),
+	.pcpi_rs2(pcpi_rs2),
+	.pcpi_mul_wr(pcpi_mul_wr),
+	.pcpi_mul_rd(pcpi_mul_rd),
+	.pcpi_mul_wait(pcpi_mul_wait),
+	.pcpi_mul_ready(pcpi_mul_ready)
+);
+
+wire pcpi_div_wr;
+wire [31:0] pcpi_div_rd;
+wire pcpi_div_wait;
+wire pcpi_div_ready;
+
+pcpi_div pcpi_div_inst_0 (
+		`ifdef USE_POWER_PINS
+		.vdd    (vdd),
+		.vss    (vss),
+	`endif
+	.clk(io_in[8]),
+	.resetn(resetn),
+	.pcpi_div_valid(pcpi_valid),
+	.pcpi_insn(pcpi_insn),
+	.pcpi_rs1(pcpi_rs1),
+	.pcpi_rs2(pcpi_rs2),
+	.pcpi_div_wr(pcpi_div_wr),
+	.pcpi_div_rd(pcpi_div_rd),
+	.pcpi_div_wait(pcpi_div_wait),
+	.pcpi_div_ready(pcpi_div_ready)
+);
+
+pcpi_exact_mul pcpi_exact_mul_inst_0(
+	`ifdef USE_POWER_PINS
+		.vdd    (vdd),
+		.vss    (vss),
+	`endif
+
+ 	.clk(io_in[8]),
+	.resetn(resetn),
+	.pcpi_valid(pcpi_valid),
+	.pcpi_insn(pcpi_insn),
+	.pcpi_rs1(pcpi_rs1),
+	.pcpi_rs2(pcpi_rs2),
+	.pcpi_wr(pcpi_exact_mul_wr),
+	.pcpi_rd(pcpi_exact_mul_rd),
+	.pcpi_wait(pcpi_exact_mul_wait),
+	.pcpi_ready(pcpi_exact_mul_ready)    
+);
+
+pcpi_approx_mul pcpi_approx_mul_inst_0(
+	`ifdef USE_POWER_PINS
+		.vdd    (vdd),
+		.vss    (vss),
+	`endif
+
+ 	.clk(io_in[8]),
+	.resetn(resetn),
+	.pcpi_valid(pcpi_valid),
+	.pcpi_insn(pcpi_insn),
+	.pcpi_rs1(pcpi_rs1),
+	.pcpi_rs2(pcpi_rs2),
+	.pcpi_wr(pcpi_approx_mul_wr),
+	.pcpi_rd(pcpi_approx_mul_rd),
+	.pcpi_wait(pcpi_approx_mul_wait),
+	.pcpi_ready(pcpi_approx_mul_ready)    
+);
+
+user_proj_example user_proj_example_inst_0 (
+	`ifdef USE_POWER_PINS
+		.vdd    (vdd),
+		.vss    (vss),
+	`endif
 
     .wb_clk_i(wb_clk_i),
     .wb_rst_i(wb_rst_i),
@@ -98,9 +440,9 @@ user_proj_example mprj (
 
     // IO Pads
 
-    .io_in ({io_in[37:30],io_in[7:0]}),
-    .io_out({io_out[37:30],io_out[7:0]}),
-    .io_oeb({io_oeb[37:30],io_oeb[7:0]}),
+    .io_in (io_in[7:0]),
+    .io_out(io_out[7:0]),
+    .io_oeb(io_oeb[7:0]),
 
     // IRQ
     .irq(user_irq)
