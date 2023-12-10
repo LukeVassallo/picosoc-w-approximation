@@ -1,7 +1,7 @@
 magic
 tech gf180mcuD
 magscale 1 5
-timestamp 1702206167
+timestamp 1702232490
 << obsm1 >>
 rect 500 500 43686 48988
 << metal2 >>
@@ -173,7 +173,7 @@ string FIXED_BBOX 0 0 45000 50000
 string LEFclass BLOCK
 string LEFview TRUE
 string GDS_END 3145860
-string GDS_FILE /home/luke/picosoc-w-approximation/openlane/gf180_ram_512x8x1/runs/23_12_10_12_01/results/signoff/gf180_ram_512x8x1.magic.gds
+string GDS_FILE /home/luke/picosoc-w-approximation/openlane/gf180_ram_512x8x1/runs/23_12_10_19_20/results/signoff/gf180_ram_512x8x1.magic.gds
 string GDS_START 2941540
 << end >>
 

@@ -8,7 +8,7 @@
 	],
 	"CLOCK_PORT": "io_in[8]",
 	"CLOCK_NET": "io_in[8]",
-	"CLOCK_PERIOD": 25,
+	"CLOCK_PERIOD": 100,
 	"VERILOG_FILES_BLACKBOX": [
 		"dir::../../verilog/gl/cpu.v",
 		"dir::../../verilog/gl/gf180_ram_512x8x1.v",

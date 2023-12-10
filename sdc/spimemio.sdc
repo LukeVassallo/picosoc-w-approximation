@@ -1,12 +1,12 @@
 ###############################################################################
 # Created by write_sdc
-# Sun Dec 10 10:31:57 2023
+# Sun Dec 10 18:17:14 2023
 ###############################################################################
 current_design spimemio
 ###############################################################################
 # Timing Constraints
 ###############################################################################
-create_clock -name clk -period 25.0000 [get_ports {clk}]
+create_clock -name clk -period 100.0000 [get_ports {clk}]
 set_clock_transition 0.1500 [get_clocks {clk}]
 set_clock_uncertainty 0.2500 clk
 set_propagated_clock [get_clocks {clk}]
