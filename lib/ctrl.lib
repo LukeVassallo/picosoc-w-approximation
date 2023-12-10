@@ -1,0 +1,159 @@
+library (ctrl) {
+  comment                        : "";
+  delay_model                    : table_lookup;
+  simulation                     : false;
+  capacitive_load_unit (1,pF);
+  leakage_power_unit             : 1pW;
+  current_unit                   : "1A";
+  pulling_resistance_unit        : "1ohm";
+  time_unit                      : "1ns";
+  voltage_unit                   : "1v";
+  library_features(report_delay_calculation);
+
+  input_threshold_pct_rise : 50;
+  input_threshold_pct_fall : 50;
+  output_threshold_pct_rise : 50;
+  output_threshold_pct_fall : 50;
+  slew_lower_threshold_pct_rise : 30;
+  slew_lower_threshold_pct_fall : 30;
+  slew_upper_threshold_pct_rise : 70;
+  slew_upper_threshold_pct_fall : 70;
+  slew_derate_from_library : 1.0;
+
+
+  nom_process                    : 1.0;
+  nom_temperature                : 25.0;
+  nom_voltage                    : 5.00;
+
+  lu_table_template(template_1) {
+    variable_1 : total_output_net_capacitance;
+    index_1 ("0.00100,  0.01420,  0.06052,  0.14900,  0.28680,  0.48020,  0.73460,  1.05500,  1.44600,  1.91300");
+  }
+  type ("ctrl_in") {
+    base_type : array;
+    data_type : bit;
+    bit_width : 2;
+    bit_from : 1;
+    bit_to : 0;
+  }
+  type ("ctrl_oeb") {
+    base_type : array;
+    data_type : bit;
+    bit_width : 2;
+    bit_from : 1;
+    bit_to : 0;
+  }
+  type ("ctrl_out") {
+    base_type : array;
+    data_type : bit;
+    bit_width : 2;
+    bit_from : 1;
+    bit_to : 0;
+  }
+
+  cell ("ctrl") {
+    interface_timing : true;
+    pin("reset") {
+      direction : output;
+      capacitance : 0.0000;
+      timing() {
+        related_pin : "ctrl_in[0]";
+        timing_type : rising_edge;
+	cell_rise(template_1) {
+          values("7.37563,7.39321,7.44763,7.54929,7.70933,7.93400,8.23080,8.60480,9.06080,9.60680");
+	}
+	rise_transition(template_1) {
+          values("0.05524,0.07961,0.16781,0.34829,0.63318,1.03309,1.56005,2.22586,3.03405,3.99895");
+	}
+	cell_fall(template_1) {
+          values("7.40746,7.42460,7.47089,7.54334,7.64685,7.78961,7.97721,8.21391,8.50233,8.84680");
+	}
+	fall_transition(template_1) {
+          values("0.05376,0.07173,0.12520,0.22295,0.38278,0.61786,0.93039,1.32347,1.80394,2.37900");
+	}
+      }
+    }
+    pin("resetn") {
+      direction : output;
+      capacitance : 0.0000;
+      timing() {
+        related_pin : "ctrl_in[0]";
+        timing_type : rising_edge;
+	cell_rise(template_1) {
+          values("7.82390,7.84227,7.89680,7.99756,8.15685,8.38106,8.67799,9.05135,9.50735,10.05206");
+	}
+	rise_transition(template_1) {
+          values("0.06068,0.08425,0.17022,0.34862,0.63307,1.03365,1.56065,2.22535,3.03335,3.99900");
+	}
+	cell_fall(template_1) {
+          values("7.64472,7.66210,7.70859,7.78099,7.88440,8.02701,8.21452,8.45131,8.73934,9.08430");
+	}
+	fall_transition(template_1) {
+          values("0.05668,0.07431,0.12686,0.22383,0.38317,0.61771,0.93049,1.32396,1.80492,2.37900");
+	}
+      }
+    }
+    pin("vdd") {
+      direction : input;
+      capacitance : 0.0000;
+    }
+    pin("vss") {
+      direction : input;
+      capacitance : 0.0000;
+    }
+    bus("ctrl_in") {
+      bus_type : ctrl_in;
+      direction : input;
+      capacitance : 0.0000;
+    pin("ctrl_in[1]") {
+      direction : input;
+      capacitance : 0.0049;
+      timing() {
+        related_pin : "ctrl_in[0]";
+        timing_type : hold_rising;
+	rise_constraint(scalar) {
+          values("6.06902");
+	}
+      }
+      timing() {
+        related_pin : "ctrl_in[0]";
+        timing_type : setup_rising;
+	rise_constraint(scalar) {
+          values("-4.56322");
+	}
+      }
+    }
+    pin("ctrl_in[0]") {
+      direction : input;
+      capacitance : 0.0342;
+    }
+    }
+    bus("ctrl_oeb") {
+      bus_type : ctrl_oeb;
+      direction : output;
+      capacitance : 0.0000;
+    pin("ctrl_oeb[1]") {
+      direction : output;
+      capacitance : 0.0000;
+    }
+    pin("ctrl_oeb[0]") {
+      direction : output;
+      capacitance : 0.0000;
+    }
+    }
+    bus("ctrl_out") {
+      bus_type : ctrl_out;
+      direction : output;
+      capacitance : 0.0000;
+    pin("ctrl_out[1]") {
+      direction : output;
+      capacitance : 0.0000;
+    }
+    pin("ctrl_out[0]") {
+      direction : output;
+      capacitance : 0.0000;
+    }
+    }
+  }
+
+}

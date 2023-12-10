@@ -1,0 +1,581 @@
+*SPEF "ieee 1481-1999"
+*DESIGN "gf180_ram_512x8x1"
+*DATE "11:11:11 Fri 11 11, 1111"
+*VENDOR "OpenRCX"
+*PROGRAM "Parallel Extraction"
+*VERSION "1.0"
+*DESIGN_FLOW "NAME_SCOPE LOCAL" "PIN_CAP NONE"
+*DIVIDER /
+*DELIMITER :
+*BUS_DELIMITER []
+*T_UNIT 1 NS
+*C_UNIT 1 PF
+*R_UNIT 1 OHM
+*L_UNIT 1 HENRY
+
+*NAME_MAP
+*3 addr[0]
+*4 addr[1]
+*5 addr[2]
+*6 addr[3]
+*7 addr[4]
+*8 addr[5]
+*9 addr[6]
+*10 addr[7]
+*11 addr[8]
+*12 cen
+*13 clk
+*14 gwen
+*15 rdata[0]
+*16 rdata[1]
+*17 rdata[2]
+*18 rdata[3]
+*19 rdata[4]
+*20 rdata[5]
+*21 rdata[6]
+*22 rdata[7]
+*23 wdata[0]
+*24 wdata[1]
+*25 wdata[2]
+*26 wdata[3]
+*27 wdata[4]
+*28 wdata[5]
+*29 wdata[6]
+*30 wdata[7]
+*31 wen[0]
+*32 wen[1]
+*33 wen[2]
+*34 wen[3]
+*35 wen[4]
+*36 wen[5]
+*37 wen[6]
+*38 wen[7]
+*39 ram_512x8x1
+
+*PORTS
+addr[0] I
+addr[1] I
+addr[2] I
+addr[3] I
+addr[4] I
+addr[5] I
+addr[6] I
+addr[7] I
+addr[8] I
+cen I
+clk I
+gwen I
+rdata[0] O
+rdata[1] O
+rdata[2] O
+rdata[3] O
+rdata[4] O
+rdata[5] O
+rdata[6] O
+rdata[7] O
+wdata[0] I
+wdata[1] I
+wdata[2] I
+wdata[3] I
+wdata[4] I
+wdata[5] I
+wdata[6] I
+wdata[7] I
+wen[0] I
+wen[1] I
+wen[2] I
+wen[3] I
+wen[4] I
+wen[5] I
+wen[6] I
+wen[7] I
+
+*D_NET *3 0.00115735
+*CONN
+*P addr[0] I
+*I *39:A[0] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 addr[0] 0.000525381
+2 *39:A[0] 0.000525381
+3 *39:A[0] *39:A[1] 0.000106593
+*RES
+1 addr[0] *39:A[0] 13.472 
+*END
+
+*D_NET *4 0.000737729
+*CONN
+*P addr[1] I
+*I *39:A[1] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 addr[1] 0.000255603
+2 *39:A[1] 0.000255603
+3 *39:A[1] *39:A[2] 0.00011993
+4 *39:A[0] *39:A[1] 0.000106593
+*RES
+1 addr[1] *39:A[1] 3.016 
+*END
+
+*D_NET *5 0.00165174
+*CONN
+*P addr[2] I
+*I *39:A[2] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 addr[2] 0.000484678
+2 *39:A[2] 0.000484678
+3 *39:A[2] *39:A[7] 0.000437167
+4 *39:A[2] *39:CLK 0.000125283
+5 *39:A[1] *39:A[2] 0.00011993
+*RES
+1 addr[2] *39:A[2] 14.928 
+*END
+
+*D_NET *6 0.00214564
+*CONN
+*P addr[3] I
+*I *39:A[3] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 addr[3] 0.000738583
+2 *39:A[3] 0.000738583
+3 *39:A[3] *39:A[4] 0.000217909
+4 *39:A[3] *39:A[5] 0.000450565
+*RES
+1 addr[3] *39:A[3] 16.28 
+*END
+
+*D_NET *7 0.00197371
+*CONN
+*P addr[4] I
+*I *39:A[4] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 addr[4] 0.000584606
+2 *39:A[4] 0.000584606
+3 *39:A[4] *39:A[5] 0.000297851
+4 *39:A[4] *39:A[6] 0.000288736
+5 *39:A[3] *39:A[4] 0.000217909
+*RES
+1 addr[4] *39:A[4] 14.928 
+*END
+
+*D_NET *8 0.00227545
+*CONN
+*P addr[5] I
+*I *39:A[5] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 addr[5] 0.000402845
+2 *39:A[5] 0.000402845
+3 *39:A[5] *39:A[6] 0.000721342
+4 *39:A[3] *39:A[5] 0.000450565
+5 *39:A[4] *39:A[5] 0.000297851
+*RES
+1 addr[5] *39:A[5] 14.408 
+*END
+
+*D_NET *9 0.00197147
+*CONN
+*P addr[6] I
+*I *39:A[6] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 addr[6] 0.000427399
+2 *39:A[6] 0.000427399
+3 *39:A[6] *39:CEN 0.000106593
+4 *39:A[4] *39:A[6] 0.000288736
+5 *39:A[5] *39:A[6] 0.000721342
+*RES
+1 addr[6] *39:A[6] 13.992 
+*END
+
+*D_NET *10 0.00342893
+*CONN
+*P addr[7] I
+*I *39:A[7] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 addr[7] 0.000332576
+2 *39:A[7] 0.000332576
+3 *39:A[7] *39:A[8] 0.00138373
+4 *39:A[7] *39:CLK 0.000942881
+5 *39:A[2] *39:A[7] 0.000437167
+*RES
+1 addr[7] *39:A[7] 15.656 
+*END
+
+*D_NET *11 0.00280436
+*CONN
+*P addr[8] I
+*I *39:A[8] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 addr[8] 0.000569261
+2 *39:A[8] 0.000569261
+3 *39:A[8] *39:CLK 0.000282103
+4 *39:A[7] *39:A[8] 0.00138373
+*RES
+1 addr[8] *39:A[8] 16.072 
+*END
+
+*D_NET *12 0.00145095
+*CONN
+*P cen I
+*I *39:CEN I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 cen 0.000672179
+2 *39:CEN 0.000672179
+3 *39:A[6] *39:CEN 0.000106593
+*RES
+1 cen *39:CEN 14.72 
+*END
+
+*D_NET *13 0.0029682
+*CONN
+*P clk I
+*I *39:CLK I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 clk 0.000808967
+2 *39:CLK 0.000808967
+3 *39:A[2] *39:CLK 0.000125283
+4 *39:A[7] *39:CLK 0.000942881
+5 *39:A[8] *39:CLK 0.000282103
+*RES
+1 clk *39:CLK 17.216 
+*END
+
+*D_NET *14 0.000679439
+*CONN
+*P gwen I
+*I *39:GWEN I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 gwen 0.000339719
+2 *39:GWEN 0.000339719
+*RES
+1 gwen *39:GWEN 3.016 
+*END
+
+*D_NET *15 0.0030781
+*CONN
+*P rdata[0] O
+*I *39:Q[0] O *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 rdata[0] 0.00123333
+2 *39:Q[0] 0.00123333
+3 rdata[0] *39:WEN[0] 0.000611444
+*RES
+1 *39:Q[0] rdata[0] 21.272 
+*END
+
+*D_NET *16 0.00222694
+*CONN
+*P rdata[1] O
+*I *39:Q[1] O *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 rdata[1] 0.000575586
+2 *39:Q[1] 0.000575586
+3 rdata[1] *39:D[1] 0.00107577
+*RES
+1 *39:Q[1] rdata[1] 15.24 
+*END
+
+*D_NET *17 0.00221989
+*CONN
+*P rdata[2] O
+*I *39:Q[2] O *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 rdata[2] 0.000599324
+2 *39:Q[2] 0.000599324
+3 rdata[2] *39:D[1] 1.07369e-05
+4 rdata[2] *39:D[2] 0.000954421
+5 rdata[2] *39:WEN[1] 5.36847e-05
+6 rdata[2] *39:WEN[2] 2.39523e-06
+*RES
+1 *39:Q[2] rdata[2] 14.616 
+*END
+
+*D_NET *18 0.00289137
+*CONN
+*P rdata[3] O
+*I *39:Q[3] O *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 rdata[3] 0.000711823
+2 *39:Q[3] 0.000711823
+3 rdata[3] *39:WEN[3] 0.00146772
+*RES
+1 *39:Q[3] rdata[3] 16.904 
+*END
+
+*D_NET *19 0.0031475
+*CONN
+*P rdata[4] O
+*I *39:Q[4] O *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 rdata[4] 0.000769869
+2 *39:Q[4] 0.000769869
+3 rdata[4] *39:D[4] 0.00132167
+4 rdata[4] *39:WEN[4] 0.000286087
+*RES
+1 *39:Q[4] rdata[4] 17.736 
+*END
+
+*D_NET *20 0.00264184
+*CONN
+*P rdata[5] O
+*I *39:Q[5] O *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 rdata[5] 0.000537108
+2 *39:Q[5] 0.000537108
+3 rdata[5] rdata[6] 1.07369e-05
+4 rdata[5] *39:D[5] 0.000505864
+5 rdata[5] *39:D[6] 0.000199998
+6 rdata[5] *39:WEN[5] 0.000847612
+7 rdata[5] *39:WEN[6] 3.40995e-06
+*RES
+1 *39:Q[5] rdata[5] 15.448 
+*END
+
+*D_NET *21 0.00329624
+*CONN
+*P rdata[6] O
+*I *39:Q[6] O *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 rdata[6] 0.000567875
+2 *39:Q[6] 0.000567875
+3 rdata[6] *39:D[5] 1.40761e-05
+4 rdata[6] *39:D[6] 0.00137161
+5 rdata[6] *39:WEN[5] 0.000641746
+6 rdata[6] *39:WEN[6] 0.000122322
+7 rdata[5] rdata[6] 1.07369e-05
+*RES
+1 *39:Q[6] rdata[6] 16.072 
+*END
+
+*D_NET *22 0.00503896
+*CONN
+*P rdata[7] O
+*I *39:Q[7] O *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 rdata[7] 0.000494489
+2 *39:Q[7] 0.000494489
+3 rdata[7] *39:D[7] 0.00181399
+4 rdata[7] *39:WEN[7] 0.00223599
+*RES
+1 *39:Q[7] rdata[7] 17.84 
+*END
+
+*D_NET *23 0.00606506
+*CONN
+*P wdata[0] I
+*I *39:D[0] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 wdata[0] 0.00107081
+2 *39:D[0] 0.00107081
+3 *39:D[0] *39:WEN[0] 0.00392344
+*RES
+1 wdata[0] *39:D[0] 22.416 
+*END
+
+*D_NET *24 0.00256389
+*CONN
+*P wdata[1] I
+*I *39:D[1] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 wdata[1] 0.000350678
+2 *39:D[1] 0.000350678
+3 *39:D[1] *39:D[2] 0.000367033
+4 *39:D[1] *39:WEN[1] 0.000408989
+5 rdata[1] *39:D[1] 0.00107577
+6 rdata[2] *39:D[1] 1.07369e-05
+*RES
+1 wdata[1] *39:D[1] 14.824 
+*END
+
+*D_NET *25 0.00308885
+*CONN
+*P wdata[2] I
+*I *39:D[2] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 wdata[2] 0.000402942
+2 *39:D[2] 0.000402942
+3 *39:D[2] *39:WEN[1] 0.000680568
+4 *39:D[2] *39:WEN[2] 0.00028094
+5 rdata[2] *39:D[2] 0.000954421
+6 *39:D[1] *39:D[2] 0.000367033
+*RES
+1 wdata[2] *39:D[2] 15.032 
+*END
+
+*D_NET *26 0.00263207
+*CONN
+*P wdata[3] I
+*I *39:D[3] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 wdata[3] 0.00057233
+2 *39:D[3] 0.00057233
+3 *39:D[3] *39:WEN[3] 0.00148741
+*RES
+1 wdata[3] *39:D[3] 15.76 
+*END
+
+*D_NET *27 0.00405972
+*CONN
+*P wdata[4] I
+*I *39:D[4] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 wdata[4] 0.000482165
+2 *39:D[4] 0.000482165
+3 *39:D[4] *39:WEN[4] 0.00177372
+4 rdata[4] *39:D[4] 0.00132167
+*RES
+1 wdata[4] *39:D[4] 16.592 
+*END
+
+*D_NET *28 0.00261983
+*CONN
+*P wdata[5] I
+*I *39:D[5] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 wdata[5] 0.000643997
+2 *39:D[5] 0.000643997
+3 *39:D[5] *39:D[6] 0.000680568
+4 *39:D[5] *39:WEN[5] 0.000131331
+5 rdata[5] *39:D[5] 0.000505864
+6 rdata[6] *39:D[5] 1.40761e-05
+*RES
+1 wdata[5] *39:D[5] 15.864 
+*END
+
+*D_NET *29 0.00331772
+*CONN
+*P wdata[6] I
+*I *39:D[6] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 wdata[6] 0.000437757
+2 *39:D[6] 0.000437757
+3 *39:D[6] *39:WEN[5] 5.17489e-05
+4 *39:D[6] *39:WEN[6] 0.000138279
+5 rdata[5] *39:D[6] 0.000199998
+6 rdata[6] *39:D[6] 0.00137161
+7 *39:D[5] *39:D[6] 0.000680568
+*RES
+1 wdata[6] *39:D[6] 15.656 
+*END
+
+*D_NET *30 0.00399591
+*CONN
+*P wdata[7] I
+*I *39:D[7] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 wdata[7] 0.000917634
+2 *39:D[7] 0.000917634
+3 *39:D[7] *39:WEN[7] 0.000346659
+4 rdata[7] *39:D[7] 0.00181399
+*RES
+1 wdata[7] *39:D[7] 19.088 
+*END
+
+*D_NET *31 0.00600642
+*CONN
+*P wen[0] I
+*I *39:WEN[0] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 wen[0] 0.000735767
+2 *39:WEN[0] 0.000735767
+3 rdata[0] *39:WEN[0] 0.000611444
+4 *39:D[0] *39:WEN[0] 0.00392344
+*RES
+1 wen[0] *39:WEN[0] 22 
+*END
+
+*D_NET *32 0.00292688
+*CONN
+*P wen[1] I
+*I *39:WEN[1] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 wen[1] 0.000333136
+2 *39:WEN[1] 0.000333136
+3 *39:WEN[1] *39:WEN[2] 0.00111736
+4 rdata[2] *39:WEN[1] 5.36847e-05
+5 *39:D[1] *39:WEN[1] 0.000408989
+6 *39:D[2] *39:WEN[1] 0.000680568
+*RES
+1 wen[1] *39:WEN[1] 14.928 
+*END
+
+*D_NET *33 0.00239713
+*CONN
+*P wen[2] I
+*I *39:WEN[2] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 wen[2] 0.000498215
+2 *39:WEN[2] 0.000498215
+3 rdata[2] *39:WEN[2] 2.39523e-06
+4 *39:D[2] *39:WEN[2] 0.00028094
+5 *39:WEN[1] *39:WEN[2] 0.00111736
+*RES
+1 wen[2] *39:WEN[2] 14.928 
+*END
+
+*D_NET *34 0.00364998
+*CONN
+*P wen[3] I
+*I *39:WEN[3] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 wen[3] 0.000347423
+2 *39:WEN[3] 0.000347423
+3 rdata[3] *39:WEN[3] 0.00146772
+4 *39:D[3] *39:WEN[3] 0.00148741
+*RES
+1 wen[3] *39:WEN[3] 15.864 
+*END
+
+*D_NET *35 0.00333038
+*CONN
+*P wen[4] I
+*I *39:WEN[4] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 wen[4] 0.000635287
+2 *39:WEN[4] 0.000635287
+3 rdata[4] *39:WEN[4] 0.000286087
+4 *39:D[4] *39:WEN[4] 0.00177372
+*RES
+1 wen[4] *39:WEN[4] 17.008 
+*END
+
+*D_NET *36 0.00384464
+*CONN
+*P wen[5] I
+*I *39:WEN[5] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 wen[5] 0.000368568
+2 *39:WEN[5] 0.000368568
+3 *39:WEN[5] *39:WEN[6] 0.00143507
+4 rdata[5] *39:WEN[5] 0.000847612
+5 rdata[6] *39:WEN[5] 0.000641746
+6 *39:D[5] *39:WEN[5] 0.000131331
+7 *39:D[6] *39:WEN[5] 5.17489e-05
+*RES
+1 wen[5] *39:WEN[5] 15.76 
+*END
+
+*D_NET *37 0.00292118
+*CONN
+*P wen[6] I
+*I *39:WEN[6] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 wen[6] 0.000611053
+2 *39:WEN[6] 0.000611053
+3 rdata[5] *39:WEN[6] 3.40995e-06
+4 rdata[6] *39:WEN[6] 0.000122322
+5 *39:D[6] *39:WEN[6] 0.000138279
+6 *39:WEN[5] *39:WEN[6] 0.00143507
+*RES
+1 wen[6] *39:WEN[6] 15.76 
+*END
+
+*D_NET *38 0.00401435
+*CONN
+*P wen[7] I
+*I *39:WEN[7] I *D gf180mcu_fd_ip_sram__sram512x8m8wm1
+*CAP
+1 wen[7] 0.000715849
+2 *39:WEN[7] 0.000715849
+3 rdata[7] *39:WEN[7] 0.00223599
+4 *39:D[7] *39:WEN[7] 0.000346659
+*RES
+1 wen[7] *39:WEN[7] 18.568 
+*END

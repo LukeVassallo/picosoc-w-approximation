@@ -1,0 +1,93 @@
+###############################################################################
+# Created by write_sdc
+# Sun Dec 10 11:02:20 2023
+###############################################################################
+current_design gf180_ram_512x8x1
+###############################################################################
+# Timing Constraints
+###############################################################################
+create_clock -name clk -period 25.0000 [get_ports {clk}]
+set_clock_transition 0.1500 [get_clocks {clk}]
+set_clock_uncertainty 0.2500 clk
+set_propagated_clock [get_clocks {clk}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {addr[0]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {addr[1]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {addr[2]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {addr[3]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {addr[4]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {addr[5]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {addr[6]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {addr[7]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {addr[8]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {cen}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {gwen}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {wdata[0]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {wdata[1]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {wdata[2]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {wdata[3]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {wdata[4]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {wdata[5]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {wdata[6]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {wdata[7]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {wen[0]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {wen[1]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {wen[2]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {wen[3]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {wen[4]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {wen[5]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {wen[6]}]
+set_input_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {wen[7]}]
+set_output_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {rdata[0]}]
+set_output_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {rdata[1]}]
+set_output_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {rdata[2]}]
+set_output_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {rdata[3]}]
+set_output_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {rdata[4]}]
+set_output_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {rdata[5]}]
+set_output_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {rdata[6]}]
+set_output_delay 5.0000 -clock [get_clocks {clk}] -add_delay [get_ports {rdata[7]}]
+###############################################################################
+# Environment
+###############################################################################
+set_load -pin_load 0.0729 [get_ports {rdata[7]}]
+set_load -pin_load 0.0729 [get_ports {rdata[6]}]
+set_load -pin_load 0.0729 [get_ports {rdata[5]}]
+set_load -pin_load 0.0729 [get_ports {rdata[4]}]
+set_load -pin_load 0.0729 [get_ports {rdata[3]}]
+set_load -pin_load 0.0729 [get_ports {rdata[2]}]
+set_load -pin_load 0.0729 [get_ports {rdata[1]}]
+set_load -pin_load 0.0729 [get_ports {rdata[0]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {cen}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_4 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {clk}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {gwen}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {addr[8]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {addr[7]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {addr[6]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {addr[5]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {addr[4]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {addr[3]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {addr[2]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {addr[1]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {addr[0]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {wdata[7]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {wdata[6]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {wdata[5]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {wdata[4]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {wdata[3]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {wdata[2]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {wdata[1]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {wdata[0]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {wen[7]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {wen[6]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {wen[5]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {wen[4]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {wen[3]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {wen[2]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {wen[1]}]
+set_driving_cell -lib_cell gf180mcu_fd_sc_mcu7t5v0__inv_1 -pin {ZN} -input_transition_rise 0.0000 -input_transition_fall 0.0000 [get_ports {wen[0]}]
+set_timing_derate -early 0.9500
+set_timing_derate -late 1.0500
+###############################################################################
+# Design Rules
+###############################################################################
+set_max_transition 3.0000 [current_design]
+set_max_fanout 10.0000 [current_design]

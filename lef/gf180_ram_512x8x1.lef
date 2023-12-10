@@ -1,0 +1,369 @@
+VERSION 5.7 ;
+  NOWIREEXTENSIONATPIN ON ;
+  DIVIDERCHAR "/" ;
+  BUSBITCHARS "[]" ;
+MACRO gf180_ram_512x8x1
+  CLASS BLOCK ;
+  FOREIGN gf180_ram_512x8x1 ;
+  ORIGIN 0.000 0.000 ;
+  SIZE 450.000 BY 500.000 ;
+  PIN VDD
+    DIRECTION INOUT ;
+    USE POWER ;
+    PORT
+      LAYER Metal4 ;
+        RECT 5.220 15.680 8.220 482.160 ;
+    END
+    PORT
+      LAYER Metal4 ;
+        RECT 428.630 15.680 431.630 482.160 ;
+    END
+  END VDD
+  PIN VSS
+    DIRECTION INOUT ;
+    USE GROUND ;
+    PORT
+      LAYER Metal4 ;
+        RECT 9.220 15.680 12.220 482.160 ;
+    END
+    PORT
+      LAYER Metal4 ;
+        RECT 432.630 15.680 435.630 482.160 ;
+    END
+  END VSS
+  PIN addr[0]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 269.920 496.000 270.480 500.000 ;
+    END
+  END addr[0]
+  PIN addr[1]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 272.160 496.000 272.720 500.000 ;
+    END
+  END addr[1]
+  PIN addr[2]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 274.400 496.000 274.960 500.000 ;
+    END
+  END addr[2]
+  PIN addr[3]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 166.880 496.000 167.440 500.000 ;
+    END
+  END addr[3]
+  PIN addr[4]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 169.120 496.000 169.680 500.000 ;
+    END
+  END addr[4]
+  PIN addr[5]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 171.360 496.000 171.920 500.000 ;
+    END
+  END addr[5]
+  PIN addr[6]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 173.600 496.000 174.160 500.000 ;
+    END
+  END addr[6]
+  PIN addr[7]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 276.640 496.000 277.200 500.000 ;
+    END
+  END addr[7]
+  PIN addr[8]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 278.880 496.000 279.440 500.000 ;
+    END
+  END addr[8]
+  PIN cen
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 175.840 496.000 176.400 500.000 ;
+    END
+  END cen
+  PIN clk
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 281.120 496.000 281.680 500.000 ;
+    END
+  END clk
+  PIN gwen
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 234.080 496.000 234.640 500.000 ;
+    END
+  END gwen
+  PIN rdata[0]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 393.120 496.000 393.680 500.000 ;
+    END
+  END rdata[0]
+  PIN rdata[1]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 368.480 496.000 369.040 500.000 ;
+    END
+  END rdata[1]
+  PIN rdata[2]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 357.280 496.000 357.840 500.000 ;
+    END
+  END rdata[2]
+  PIN rdata[3]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 310.240 496.000 310.800 500.000 ;
+    END
+  END rdata[3]
+  PIN rdata[4]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 137.760 496.000 138.320 500.000 ;
+    END
+  END rdata[4]
+  PIN rdata[5]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 90.720 496.000 91.280 500.000 ;
+    END
+  END rdata[5]
+  PIN rdata[6]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 79.520 496.000 80.080 500.000 ;
+    END
+  END rdata[6]
+  PIN rdata[7]
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 43.680 496.000 44.240 500.000 ;
+    END
+  END rdata[7]
+  PIN wdata[0]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 397.600 496.000 398.160 500.000 ;
+    END
+  END wdata[0]
+  PIN wdata[1]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 366.240 496.000 366.800 500.000 ;
+    END
+  END wdata[1]
+  PIN wdata[2]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 359.520 496.000 360.080 500.000 ;
+    END
+  END wdata[2]
+  PIN wdata[3]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 305.760 496.000 306.320 500.000 ;
+    END
+  END wdata[3]
+  PIN wdata[4]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 142.240 496.000 142.800 500.000 ;
+    END
+  END wdata[4]
+  PIN wdata[5]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 88.480 496.000 89.040 500.000 ;
+    END
+  END wdata[5]
+  PIN wdata[6]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 81.760 496.000 82.320 500.000 ;
+    END
+  END wdata[6]
+  PIN wdata[7]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 39.200 496.000 39.760 500.000 ;
+    END
+  END wdata[7]
+  PIN wen[0]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 395.360 496.000 395.920 500.000 ;
+    END
+  END wen[0]
+  PIN wen[1]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 364.000 496.000 364.560 500.000 ;
+    END
+  END wen[1]
+  PIN wen[2]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 361.760 496.000 362.320 500.000 ;
+    END
+  END wen[2]
+  PIN wen[3]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 308.000 496.000 308.560 500.000 ;
+    END
+  END wen[3]
+  PIN wen[4]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 140.000 496.000 140.560 500.000 ;
+    END
+  END wen[4]
+  PIN wen[5]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 86.240 496.000 86.800 500.000 ;
+    END
+  END wen[5]
+  PIN wen[6]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 84.000 496.000 84.560 500.000 ;
+    END
+  END wen[6]
+  PIN wen[7]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER Metal2 ;
+        RECT 41.440 496.000 42.000 500.000 ;
+    END
+  END wen[7]
+  OBS
+      LAYER Metal1 ;
+        RECT 5.000 5.000 436.860 489.880 ;
+      LAYER Metal2 ;
+        RECT 5.000 495.700 38.900 496.000 ;
+        RECT 40.060 495.700 41.140 496.000 ;
+        RECT 42.300 495.700 43.380 496.000 ;
+        RECT 44.540 495.700 79.220 496.000 ;
+        RECT 80.380 495.700 81.460 496.000 ;
+        RECT 82.620 495.700 83.700 496.000 ;
+        RECT 84.860 495.700 85.940 496.000 ;
+        RECT 87.100 495.700 88.180 496.000 ;
+        RECT 89.340 495.700 90.420 496.000 ;
+        RECT 91.580 495.700 137.460 496.000 ;
+        RECT 138.620 495.700 139.700 496.000 ;
+        RECT 140.860 495.700 141.940 496.000 ;
+        RECT 143.100 495.700 166.580 496.000 ;
+        RECT 167.740 495.700 168.820 496.000 ;
+        RECT 169.980 495.700 171.060 496.000 ;
+        RECT 172.220 495.700 173.300 496.000 ;
+        RECT 174.460 495.700 175.540 496.000 ;
+        RECT 176.700 495.700 233.780 496.000 ;
+        RECT 234.940 495.700 269.620 496.000 ;
+        RECT 270.780 495.700 271.860 496.000 ;
+        RECT 273.020 495.700 274.100 496.000 ;
+        RECT 275.260 495.700 276.340 496.000 ;
+        RECT 277.500 495.700 278.580 496.000 ;
+        RECT 279.740 495.700 280.820 496.000 ;
+        RECT 281.980 495.700 305.460 496.000 ;
+        RECT 306.620 495.700 307.700 496.000 ;
+        RECT 308.860 495.700 309.940 496.000 ;
+        RECT 311.100 495.700 356.980 496.000 ;
+        RECT 358.140 495.700 359.220 496.000 ;
+        RECT 360.380 495.700 361.460 496.000 ;
+        RECT 362.620 495.700 363.700 496.000 ;
+        RECT 364.860 495.700 365.940 496.000 ;
+        RECT 367.100 495.700 368.180 496.000 ;
+        RECT 369.340 495.700 392.820 496.000 ;
+        RECT 393.980 495.700 395.060 496.000 ;
+        RECT 396.220 495.700 397.300 496.000 ;
+        RECT 398.460 495.700 436.860 496.000 ;
+        RECT 5.000 5.000 436.860 495.700 ;
+      LAYER Metal3 ;
+        RECT 5.000 5.000 436.860 495.460 ;
+  END
+END gf180_ram_512x8x1
+END LIBRARY
+
