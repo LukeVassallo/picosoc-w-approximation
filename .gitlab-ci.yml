@@ -10,38 +10,13 @@ stages:
 - harden
 - integration
 # - precheck
-# - deploy
-# - review
-# - dast
-# - staging
-# - canary
-# - production
-# - incremental rollout 10%
-# - incremental rollout 25%
-# - incremental rollout 50%
-# - incremental rollout 100%
-# - performance
-# - cleanup
-
-  #build-aarch32:       # This job runs in the build stage, which runs first.
-  #stage: build
-  #tags:
-  #  - aarch32
-  #variables:
-  #  GIT_STRATEGY: fetch
-  #script:
-  #  - echo "Compiling the tools..."
-  #  - |+
-  #    cd fossi
-  #    ./install_yosys.sh --skip_dependency_install
-  #  - echo "Compile complete."
 
 setup:
   stage: setup
   tags:
-    - general-purpose
+    - general-purpose:sequential
   variables:
-    GIT_STRATEGY: clone
+    GIT_STRATEGY: clone    
   script:
     - echo "Setting up environment ... "
     - |+
@@ -54,7 +29,7 @@ setup:
 cpu:
   stage: harden
   tags:
-    - general-purpose
+    - general-purpose:sequential
   needs: ["setup"]    
   variables:
     GIT_STRATEGY: none
@@ -70,7 +45,7 @@ cpu:
 ctrl:
   stage: harden
   tags:
-    - general-purpose
+    - general-purpose:sequential
   needs: ["setup"]    
   variables:
     GIT_STRATEGY: none
@@ -86,7 +61,7 @@ ctrl:
 flash_controller:
   stage: harden
   tags:
-    - general-purpose
+    - general-purpose:sequential
   needs: ["setup"]
   variables:
     GIT_STRATEGY: none
@@ -102,10 +77,11 @@ flash_controller:
 gf180_ram_512x8x1:
   stage: harden
   tags:
-    - general-purpose
+    - general-purpose:sequential
   needs: ["setup"]    
   variables:
-    GIT_STRATEGY: fetch
+    GIT_STRATEGY: none
+    GIT_CLEAN: none
   script:
     - echo "Hardening the gf180_ram_512x8x1 module ..."
     - |+
@@ -117,7 +93,7 @@ gf180_ram_512x8x1:
 pcpi_approx_mul:
   stage: harden
   tags:
-    - general-purpose
+    - general-purpose:sequential
   needs: ["setup"]    
   variables:
     GIT_STRATEGY: none
@@ -133,7 +109,7 @@ pcpi_approx_mul:
 pcpi_div:
   stage: harden
   tags:
-    - general-purpose
+    - general-purpose:sequential
   needs: ["setup"]    
   variables:
     GIT_STRATEGY: none
@@ -149,7 +125,7 @@ pcpi_div:
 pcpi_exact_mul:
   stage: harden
   tags:
-    - general-purpose
+    - general-purpose:sequential
   needs: ["setup"]    
   variables:
     GIT_STRATEGY: none
@@ -165,7 +141,7 @@ pcpi_exact_mul:
 pcpi_mul:
   stage: harden
   tags:
-    - general-purpose
+    - general-purpose:sequential
   needs: ["setup"]    
   variables:
     GIT_STRATEGY: none
@@ -181,7 +157,7 @@ pcpi_mul:
 simple_interconnect:
   stage: harden
   tags:
-    - general-purpose
+    - general-purpose:sequential
   needs: ["setup"]    
   variables:
     GIT_STRATEGY: none
@@ -197,7 +173,7 @@ simple_interconnect:
 uart:
   stage: harden
   tags:
-    - general-purpose
+    - general-purpose:sequential
   needs: ["setup"]    
   variables:
     GIT_STRATEGY: none
@@ -213,7 +189,7 @@ uart:
 user_proj_example:
   stage: harden
   tags:
-    - general-purpose
+    - general-purpose:sequential
   needs: ["setup"]    
   variables:
     GIT_STRATEGY: none
@@ -229,7 +205,7 @@ user_proj_example:
 user_project_wrapper:
   stage: integration
   tags:
-    - general-purpose
+    - general-purpose:sequential
   needs: ["cpu", "ctrl", "flash_controller", "gf180_ram_512x8x1", "pcpi_approx_mul", "pcpi_div", "pcpi_exact_mul", "pcpi_mul", "simple_interconnect", "uart", "user_proj_example"]
   variables:
     GIT_STRATEGY: none
