@@ -9,7 +9,7 @@ stages:
 - setup
 - harden
 - integration
-# - precheck
+- precheck
 
 setup:
   stage: setup
@@ -217,6 +217,44 @@ user_project_wrapper:
       . ./venv/bin/activate
       make user_proj_example
     - echo "Hardening complete."  
+
+make_precheck:
+  stage: precheck
+  tags:
+    - general-purpose:sequential
+  needs: ["user_project_wrapper"]    
+  variables:
+    GIT_STRATEGY: none
+    GIT_CLEAN: none
+  script:
+    - echo "Setting up environment ... "
+    - |+
+      python3 -m venv venv
+      . ./venv/bin/activate
+    - echo "Making precheck."
+    - |+
+      make precheck
+    - echo "Precheck build complete."
+
+run_precheck:
+  stage: precheck
+  tags:
+    - general-purpose:sequential
+  needs: ["make_precheck"]    
+  variables:
+    GIT_STRATEGY: none
+    GIT_CLEAN: none
+  script:
+    - echo "Setting up environment ... "
+    - |+
+      python3 -m venv venv
+      . ./venv/bin/activate
+    - echo "Making precheck."
+    - |+
+      make run-precheck
+    - echo "Precheck complete."    
+
+
 # picosoc-w-approximation:
 #   stage: precheck
 #   tags:
