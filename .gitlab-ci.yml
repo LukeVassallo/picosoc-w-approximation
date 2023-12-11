@@ -1,0 +1,218 @@
+# You can override the included template(s) by including variable overrides
+# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
+# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
+# Dependency Scanning customization: https://docs.gitlab.com/ee/user/application_security/dependency_scanning/#customizing-the-dependency-scanning-settings
+# Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
+# Note that environment variables can be set in several places
+# See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
+stages:
+# - build
+- precheck
+# - deploy
+# - review
+# - dast
+# - staging
+# - canary
+# - production
+# - incremental rollout 10%
+# - incremental rollout 25%
+# - incremental rollout 50%
+# - incremental rollout 100%
+# - performance
+# - cleanup
+
+  #build-aarch32:       # This job runs in the build stage, which runs first.
+  #stage: build
+  #tags:
+  #  - aarch32
+  #variables:
+  #  GIT_STRATEGY: fetch
+  #script:
+  #  - echo "Compiling the tools..."
+  #  - |+
+  #    cd fossi
+  #    ./install_yosys.sh --skip_dependency_install
+  #  - echo "Compile complete."
+
+# cpu:
+#   stage: build
+#   tags:
+#     - general-purpose
+#   variables:
+#     GIT_STRATEGY: fetch
+#   script:
+#     - echo "Hardening the cpu module ..."
+#     - |+
+#       python3 -m venv venv
+#       . ./venv/bin/activate
+#       make cpu
+#     - echo "Hardening complete."
+
+# ctrl:
+#   stage: build
+#   tags:
+#     - general-purpose
+#   variables:
+#     GIT_STRATEGY: fetch
+#   script:
+#     - echo "Hardening the ctrl module ..."
+#     - |+
+#       python3 -m venv venv
+#       . ./venv/bin/activate
+#       make ctrl
+#     - echo "Hardening complete."
+
+# flash_controller:
+#   stage: build
+#   tags:
+#     - general-purpose
+#   variables:
+#     GIT_STRATEGY: fetch
+#   script:
+#     - echo "Hardening the flash_controller module ..."
+#     - |+
+#       python3 -m venv venv
+#       . ./venv/bin/activate
+#       make flash_controller
+#     - echo "Hardening complete."
+
+# gf180_ram_512x8x1:
+#   stage: build
+#   tags:
+#     - general-purpose
+#   variables:
+#     GIT_STRATEGY: fetch
+#   script:
+#     - echo "Hardening the gf180_ram_512x8x1 module ..."
+#     - |+
+#       python3 -m venv venv
+#       . ./venv/bin/activate
+#       make gf180_ram_512x8x1
+#     - echo "Hardening complete."
+
+# pcpi_approx_mul:
+#   stage: build
+#   tags:
+#     - general-purpose
+#   variables:
+#     GIT_STRATEGY: fetch
+#   script:
+#     - echo "Hardening the pcpi_approx_mul module ..."
+#     - |+
+#       python3 -m venv venv
+#       . ./venv/bin/activate
+#       make pcpi_approx_mul
+#     - echo "Hardening complete."
+
+# pcpi_div:
+#   stage: build
+#   tags:
+#     - general-purpose
+#   variables:
+#     GIT_STRATEGY: fetch
+#   script:
+#     - echo "Hardening the pcpi_div module ..."
+#     - |+
+#       python3 -m venv venv
+#       . ./venv/bin/activate
+#       make pcpi_div
+#     - echo "Hardening complete."
+
+# pcpi_exact_mul:
+#   stage: build
+#   tags:
+#     - general-purpose
+#   variables:
+#     GIT_STRATEGY: fetch
+#   script:
+#     - echo "Hardening the pcpi_exact_mul module ..."
+#     - |+
+#       python3 -m venv venv
+#       . ./venv/bin/activate
+#       make pcpi_exact_mul
+#     - echo "Hardening complete."
+
+# pcpi_mul:
+#   stage: build
+#   tags:
+#     - general-purpose
+#   variables:
+#     GIT_STRATEGY: fetch
+#   script:
+#     - echo "Hardening the pcpi_mul module ..."
+#     - |+
+#       python3 -m venv venv
+#       . ./venv/bin/activate
+#       make pcpi_mul
+#     - echo "Hardening complete."
+
+# simple_interconnect:
+#   stage: build
+#   tags:
+#     - general-purpose
+#   variables:
+#     GIT_STRATEGY: fetch
+#   script:
+#     - echo "Hardening the simple_interconnect module ..."
+#     - |+
+#       python3 -m venv venv
+#       . ./venv/bin/activate
+#       make simple_interconnect
+#     - echo "Hardening complete."  
+
+# uart:
+#   stage: build
+#   tags:
+#     - general-purpose
+#   variables:
+#     GIT_STRATEGY: fetch
+#   script:
+#     - echo "Hardening the uart module ..."
+#     - |+
+#       python3 -m venv venv
+#       . ./venv/bin/activate
+#       make uart
+#     - echo "Hardening complete."  
+
+# user_proj_example:
+#   stage: build
+#   tags:
+#     - general-purpose
+#   variables:
+#     GIT_STRATEGY: fetch
+#   script:
+#     - echo "Hardening the user_proj_example module ..."
+#     - |+
+#       python3 -m venv venv
+#       . ./venv/bin/activate
+#       make user_proj_example
+#     - echo "Hardening complete."  
+
+picosoc-w-approximation:
+  stage: precheck
+  tags:
+    - general-purpose
+  variables:
+    GIT_STRATEGY: fetch
+  script:
+    - echo "Setting up environment ... "
+    - |+
+      python3 -m venv venv
+      . ./venv/bin/activate
+      export PDK=gf180mcuD 
+      make setup
+    - echo "Environment setup complete. Hardening macros ..."
+    - |+
+      make -j4 cpu ctrl flash_controller gf180_ram_512x8x1 simple_interconnect uart user_proj_example
+      make -j4 pcpi_approx_mul pcpi_div pcpi_exact_mul pcpi_mul
+    - echo "Hardening macros complete. Performing chip integration ... "
+    - |+
+      make user_project_wrapper
+    - echo "Chip integration complete. Running precheck."
+    - |+
+      make precheck
+      make run-precheck
+    - echo "Precheck complete."
+
+# include:
+# - template: Auto-DevOps.gitlab-ci.yml
