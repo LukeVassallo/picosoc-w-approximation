@@ -36,7 +36,7 @@ stages:
   #    ./install_yosys.sh --skip_dependency_install
   #  - echo "Compile complete."
 
-environment:
+setup:
   stage: setup
   tags:
     - general-purpose
