@@ -6,8 +6,10 @@
 # Note that environment variables can be set in several places
 # See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
 stages:
-# - build
-- precheck
+- setup
+- harden
+- integration
+# - precheck
 # - deploy
 # - review
 # - dast
@@ -34,166 +36,12 @@ stages:
   #    ./install_yosys.sh --skip_dependency_install
   #  - echo "Compile complete."
 
-# cpu:
-#   stage: build
-#   tags:
-#     - general-purpose
-#   variables:
-#     GIT_STRATEGY: fetch
-#   script:
-#     - echo "Hardening the cpu module ..."
-#     - |+
-#       python3 -m venv venv
-#       . ./venv/bin/activate
-#       make cpu
-#     - echo "Hardening complete."
-
-# ctrl:
-#   stage: build
-#   tags:
-#     - general-purpose
-#   variables:
-#     GIT_STRATEGY: fetch
-#   script:
-#     - echo "Hardening the ctrl module ..."
-#     - |+
-#       python3 -m venv venv
-#       . ./venv/bin/activate
-#       make ctrl
-#     - echo "Hardening complete."
-
-# flash_controller:
-#   stage: build
-#   tags:
-#     - general-purpose
-#   variables:
-#     GIT_STRATEGY: fetch
-#   script:
-#     - echo "Hardening the flash_controller module ..."
-#     - |+
-#       python3 -m venv venv
-#       . ./venv/bin/activate
-#       make flash_controller
-#     - echo "Hardening complete."
-
-# gf180_ram_512x8x1:
-#   stage: build
-#   tags:
-#     - general-purpose
-#   variables:
-#     GIT_STRATEGY: fetch
-#   script:
-#     - echo "Hardening the gf180_ram_512x8x1 module ..."
-#     - |+
-#       python3 -m venv venv
-#       . ./venv/bin/activate
-#       make gf180_ram_512x8x1
-#     - echo "Hardening complete."
-
-# pcpi_approx_mul:
-#   stage: build
-#   tags:
-#     - general-purpose
-#   variables:
-#     GIT_STRATEGY: fetch
-#   script:
-#     - echo "Hardening the pcpi_approx_mul module ..."
-#     - |+
-#       python3 -m venv venv
-#       . ./venv/bin/activate
-#       make pcpi_approx_mul
-#     - echo "Hardening complete."
-
-# pcpi_div:
-#   stage: build
-#   tags:
-#     - general-purpose
-#   variables:
-#     GIT_STRATEGY: fetch
-#   script:
-#     - echo "Hardening the pcpi_div module ..."
-#     - |+
-#       python3 -m venv venv
-#       . ./venv/bin/activate
-#       make pcpi_div
-#     - echo "Hardening complete."
-
-# pcpi_exact_mul:
-#   stage: build
-#   tags:
-#     - general-purpose
-#   variables:
-#     GIT_STRATEGY: fetch
-#   script:
-#     - echo "Hardening the pcpi_exact_mul module ..."
-#     - |+
-#       python3 -m venv venv
-#       . ./venv/bin/activate
-#       make pcpi_exact_mul
-#     - echo "Hardening complete."
-
-# pcpi_mul:
-#   stage: build
-#   tags:
-#     - general-purpose
-#   variables:
-#     GIT_STRATEGY: fetch
-#   script:
-#     - echo "Hardening the pcpi_mul module ..."
-#     - |+
-#       python3 -m venv venv
-#       . ./venv/bin/activate
-#       make pcpi_mul
-#     - echo "Hardening complete."
-
-# simple_interconnect:
-#   stage: build
-#   tags:
-#     - general-purpose
-#   variables:
-#     GIT_STRATEGY: fetch
-#   script:
-#     - echo "Hardening the simple_interconnect module ..."
-#     - |+
-#       python3 -m venv venv
-#       . ./venv/bin/activate
-#       make simple_interconnect
-#     - echo "Hardening complete."  
-
-# uart:
-#   stage: build
-#   tags:
-#     - general-purpose
-#   variables:
-#     GIT_STRATEGY: fetch
-#   script:
-#     - echo "Hardening the uart module ..."
-#     - |+
-#       python3 -m venv venv
-#       . ./venv/bin/activate
-#       make uart
-#     - echo "Hardening complete."  
-
-# user_proj_example:
-#   stage: build
-#   tags:
-#     - general-purpose
-#   variables:
-#     GIT_STRATEGY: fetch
-#   script:
-#     - echo "Hardening the user_proj_example module ..."
-#     - |+
-#       python3 -m venv venv
-#       . ./venv/bin/activate
-#       make user_proj_example
-#     - echo "Hardening complete."  
-
-picosoc-w-approximation:
-  stage: precheck
+environment:
+  stage: setup
   tags:
     - general-purpose
   variables:
-    GIT_STRATEGY: fetch
+    GIT_STRATEGY: clone
   script:
     - echo "Setting up environment ... "
     - |+
@@ -202,17 +50,242 @@ picosoc-w-approximation:
       export PDK=gf180mcuD 
       make setup
     - echo "Environment setup complete. Hardening macros ..."
+
+cpu:
+  stage: harden
+  tags:
+    - general-purpose
+  needs: ["setup"]    
+  variables:
+    GIT_STRATEGY: none
+    GIT_CLEAN: none
+  script:
+    - echo "Hardening the cpu module ..."
     - |+
-      make -j4 cpu ctrl flash_controller gf180_ram_512x8x1 simple_interconnect uart user_proj_example
-      make -j4 pcpi_approx_mul pcpi_div pcpi_exact_mul pcpi_mul
-    - echo "Hardening macros complete. Performing chip integration ... "
+      # python3 -m venv venv
+      . ./venv/bin/activate
+      make cpu
+    - echo "Hardening complete."
+
+ctrl:
+  stage: build
+  tags:
+    - general-purpose
+  needs: ["setup"]    
+  variables:
+    GIT_STRATEGY: none
+    GIT_CLEAN: none
+  script:
+    - echo "Hardening the ctrl module ..."
     - |+
-      make user_project_wrapper
-    - echo "Chip integration complete. Running precheck."
+      # python3 -m venv venv
+      . ./venv/bin/activate
+      make ctrl
+    - echo "Hardening complete."
+
+flash_controller:
+  stage: build
+  tags:
+    - general-purpose
+  needs: ["setup"]
+  variables:
+    GIT_STRATEGY: none
+    GIT_CLEAN: none
+  script:
+    - echo "Hardening the flash_controller module ..."
     - |+
-      make precheck
-      make run-precheck
-    - echo "Precheck complete."
+      python3 -m venv venv
+      # . ./venv/bin/activate
+      make flash_controller
+    - echo "Hardening complete."
+
+gf180_ram_512x8x1:
+  stage: build
+  tags:
+    - general-purpose
+  needs: ["setup"]    
+  variables:
+    GIT_STRATEGY: fetch
+  script:
+    - echo "Hardening the gf180_ram_512x8x1 module ..."
+    - |+
+      python3 -m venv venv
+      # . ./venv/bin/activate
+      make gf180_ram_512x8x1
+    - echo "Hardening complete."
+
+pcpi_approx_mul:
+  stage: build
+  tags:
+    - general-purpose
+  needs: ["setup"]    
+  variables:
+    GIT_STRATEGY: none
+    GIT_CLEAN: none
+  script:
+    - echo "Hardening the pcpi_approx_mul module ..."
+    - |+
+      python3 -m venv venv
+      # . ./venv/bin/activate
+      make pcpi_approx_mul
+    - echo "Hardening complete."
+
+pcpi_div:
+  stage: build
+  tags:
+    - general-purpose
+  needs: ["setup"]    
+  variables:
+    GIT_STRATEGY: none
+    GIT_CLEAN: none
+  script:
+    - echo "Hardening the pcpi_div module ..."
+    - |+
+      # python3 -m venv venv
+      . ./venv/bin/activate
+      make pcpi_div
+    - echo "Hardening complete."
+
+pcpi_exact_mul:
+  stage: build
+  tags:
+    - general-purpose
+  needs: ["setup"]    
+  variables:
+    GIT_STRATEGY: none
+    GIT_CLEAN: none
+  script:
+    - echo "Hardening the pcpi_exact_mul module ..."
+    - |+
+      python3 -m venv venv
+      # . ./venv/bin/activate
+      make pcpi_exact_mul
+    - echo "Hardening complete."
+
+pcpi_mul:
+  stage: build
+  tags:
+    - general-purpose
+  needs: ["setup"]    
+  variables:
+    GIT_STRATEGY: none
+    GIT_CLEAN: none
+  script:
+    - echo "Hardening the pcpi_mul module ..."
+    - |+
+      python3 -m venv venv
+      # . ./venv/bin/activate
+      make pcpi_mul
+    - echo "Hardening complete."
+
+simple_interconnect:
+  stage: build
+  tags:
+    - general-purpose
+  needs: ["setup"]    
+  variables:
+    GIT_STRATEGY: none
+    GIT_CLEAN: none
+  script:
+    - echo "Hardening the simple_interconnect module ..."
+    - |+
+      # python3 -m venv venv
+      . ./venv/bin/activate
+      make simple_interconnect
+    - echo "Hardening complete."  
+
+uart:
+  stage: build
+  tags:
+    - general-purpose
+  needs: ["setup"]    
+  variables:
+    GIT_STRATEGY: none
+    GIT_CLEAN: none
+  script:
+    - echo "Hardening the uart module ..."
+    - |+
+      # python3 -m venv venv
+      . ./venv/bin/activate
+      make uart
+    - echo "Hardening complete."  
+
+user_proj_example:
+  stage: build
+  tags:
+    - general-purpose
+  needs: ["setup"]    
+  variables:
+    GIT_STRATEGY: none
+    GIT_CLEAN: none
+  script:
+    - echo "Hardening the user_proj_example module ..."
+    - |+
+      # python3 -m venv venv
+      . ./venv/bin/activate
+      make user_proj_example
+    - echo "Hardening complete."  
+
+user_project_wrapper:
+  stage: integration
+  tags:
+    - general-purpose
+  needs:
+    job: cpu
+    job: ctrl
+    job: flash_controller
+    job: gf180_ram_512x8x1
+    job: pcpi_approx_mul
+    job: pcpi_div
+    job: pcpi_exact_mul
+    job: pcpi_mul
+    job: simple_interconnect
+    job: uart
+    job: user_proj_example
+  variables:
+    GIT_STRATEGY: none
+    GIT_CLEAN: none
+  script:
+    - echo "Hardening the user_proj_example module ..."
+    - |+
+      # python3 -m venv venv
+      . ./venv/bin/activate
+      make user_proj_example
+    - echo "Hardening complete."  
+# picosoc-w-approximation:
+#   stage: precheck
+#   tags:
+#     - general-purpose
+#   variables:
+#     GIT_STRATEGY: fetch
+#   script:
+#     - echo "Setting up environment ... "
+#     - |+
+#       python3 -m venv venv
+#       . ./venv/bin/activate
+#       export PDK=gf180mcuD 
+#       make setup
+#     - echo "Environment setup complete. Hardening macros ..."
+#     - |+
+#       make cpu
+#       make ctrl
+#       make flash_controller
+#       make gf180_ram_512x8x1
+#       make pcpi_approx_mul
+#       make pcpi_div
+#       mmake pcpi_exact_mul
+#       make pcpi_mul
+#       make simple_interconnect
+#       make uart
+#       make user_proj_example
+#     - echo "Hardening macros complete. Performing chip integration ... "
+#     - |+
+#       make user_project_wrapper
+#     - echo "Chip integration complete. Running precheck."
+#     - |+
+#       make precheck
+#       make run-precheck
+#     - echo "Precheck complete."
 
 # include:
 # - template: Auto-DevOps.gitlab-ci.yml
