@@ -260,7 +260,7 @@ run-precheck: check-pdk check-precheck
 	else \
 		$(eval INPUT_DIRECTORY := $(shell pwd)) \
 		cd $(PRECHECK_ROOT) && \
-		docker run -it -v $(PRECHECK_ROOT):$(PRECHECK_ROOT) \
+		docker run -v $(PRECHECK_ROOT):$(PRECHECK_ROOT) \
 		-v $(INPUT_DIRECTORY):$(INPUT_DIRECTORY) \
 		-v $(PDK_ROOT):$(PDK_ROOT) \
 		-e INPUT_DIRECTORY=$(INPUT_DIRECTORY) \
