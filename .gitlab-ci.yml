@@ -68,7 +68,7 @@ cpu:
     - echo "Hardening complete."
 
 ctrl:
-  stage: build
+  stage: harden
   tags:
     - general-purpose
   needs: ["setup"]    
@@ -84,7 +84,7 @@ ctrl:
     - echo "Hardening complete."
 
 flash_controller:
-  stage: build
+  stage: harden
   tags:
     - general-purpose
   needs: ["setup"]
@@ -100,7 +100,7 @@ flash_controller:
     - echo "Hardening complete."
 
 gf180_ram_512x8x1:
-  stage: build
+  stage: harden
   tags:
     - general-purpose
   needs: ["setup"]    
@@ -115,7 +115,7 @@ gf180_ram_512x8x1:
     - echo "Hardening complete."
 
 pcpi_approx_mul:
-  stage: build
+  stage: harden
   tags:
     - general-purpose
   needs: ["setup"]    
@@ -131,7 +131,7 @@ pcpi_approx_mul:
     - echo "Hardening complete."
 
 pcpi_div:
-  stage: build
+  stage: harden
   tags:
     - general-purpose
   needs: ["setup"]    
@@ -147,7 +147,7 @@ pcpi_div:
     - echo "Hardening complete."
 
 pcpi_exact_mul:
-  stage: build
+  stage: harden
   tags:
     - general-purpose
   needs: ["setup"]    
@@ -163,7 +163,7 @@ pcpi_exact_mul:
     - echo "Hardening complete."
 
 pcpi_mul:
-  stage: build
+  stage: harden
   tags:
     - general-purpose
   needs: ["setup"]    
@@ -179,7 +179,7 @@ pcpi_mul:
     - echo "Hardening complete."
 
 simple_interconnect:
-  stage: build
+  stage: harden
   tags:
     - general-purpose
   needs: ["setup"]    
@@ -195,7 +195,7 @@ simple_interconnect:
     - echo "Hardening complete."  
 
 uart:
-  stage: build
+  stage: harden
   tags:
     - general-purpose
   needs: ["setup"]    
@@ -211,7 +211,7 @@ uart:
     - echo "Hardening complete."  
 
 user_proj_example:
-  stage: build
+  stage: harden
   tags:
     - general-purpose
   needs: ["setup"]    
