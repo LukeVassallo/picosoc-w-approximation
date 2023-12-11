@@ -1,7 +1,6 @@
 # Caravel user project includes
 -v $(USER_PROJECT_VERILOG)/rtl/user_project_wrapper.v	
 -v $(USER_PROJECT_VERILOG)/rtl/user_proj_example.v	     
--v $(USER_PROJECT_VERILOG)/rtl/top.v
 -v $(USER_PROJECT_VERILOG)/rtl/cpu.v
 -v $(USER_PROJECT_VERILOG)/rtl/picorv32.v
 -v $(USER_PROJECT_VERILOG)/rtl/simpleuart.v
@@ -9,7 +8,6 @@
 -v $(USER_PROJECT_VERILOG)/rtl/gf180_ram_512x8x1.v
 -v $(USER_PROJECT_VERILOG)/rtl/simple_interconnect.v
 -v $(USER_PROJECT_VERILOG)/rtl/ctrl.v
--v $(USER_PROJECT_VERILOG)/rtl/pcpi_interconnect.v
 -v $(USER_PROJECT_VERILOG)/rtl/pcpi_mul.v
 -v $(USER_PROJECT_VERILOG)/rtl/pcpi_div.v
 -v $(USER_PROJECT_VERILOG)/rtl/pcpi_exact_mul.v
