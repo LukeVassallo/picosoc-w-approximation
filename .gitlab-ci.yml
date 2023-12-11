@@ -59,7 +59,7 @@ rtl-bootloader:
     - echo "Running bootloader rtl (functional) simulation ..."
     - |+
       . ./venv/bin/activate
-      make CROSS=./rv32im/bin/riscv32-unknown-elf- -C ./verilog/dv/bootloader_user_wrapper_wo_caravel/fw/app_02 firmware
+      make CROSS=$PWD/rv32im/bin/riscv32-unknown-elf- -C ./verilog/dv/bootloader_user_wrapper_wo_caravel/fw/app_02 firmware
       make verify-bootloader_user_wrapper_wo_caravel-rtl
     - echo "rtl (functional) simulation complete."
 
@@ -75,7 +75,7 @@ rtl-pcpi-rv32im:
     - echo "Running bootloader with RV32IM pcpi modules rtl (functional) simulation ..."
     - |+
       . ./venv/bin/activate
-      make CROSS=./rv32im/bin/riscv32-unknown-elf- -C ./verilog/dv/bootloader_user_wrapper_wo_caravel/fw/app_04 firmware
+      make CROSS=$PWD/rv32im/bin/riscv32-unknown-elf- -C ./verilog/dv/bootloader_user_wrapper_wo_caravel/fw/app_04 firmware
       make verify-pcpi_bootloader_user_wrapper_wo_caravel-rtl
     - echo "rtl (functional) simulation complete."
 
@@ -91,7 +91,7 @@ rtl-pcpi-custom:
     - echo "Running bootloader with custom pcpi modules rtl (functional) simulation ..."
     - |+
       . ./venv/bin/activate
-      make CROSS=./rv32im/bin/riscv32-unknown-elf- -C ./verilog/dv/bootloader_user_wrapper_wo_caravel/fw/app_05 firmware
+      make CROSS=$PWD/rv32im/bin/riscv32-unknown-elf- -C ./verilog/dv/bootloader_user_wrapper_wo_caravel/fw/app_05 firmware
       make verify-pcpi_exact_approx_bootloader_user_wrapper_wo_caravel-rtl
     - echo "rtl (functional) simulation complete."
 
