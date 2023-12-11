@@ -7,11 +7,12 @@
 # See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
 stages:
 - setup
+- rtl-sim
 - harden
 - integration
 - precheck
 
-setup:
+caravel_user_project:
   stage: setup
   tags:
     - general-purpose:sequential
@@ -26,11 +27,79 @@ setup:
       make setup
     - echo "Environment setup complete. Hardening macros ..."
 
+rv32im:
+  stage: setup
+  tags:
+    - general-purpose:sequential
+  variables:
+    GIT_STRATEGY: none
+    GIT_CLEAN: none
+  script:
+    - echo "Building RISCV32-IM toolchain, assuming all dependent packages are installed ..."
+    - |+
+      ORIGIN_DIR=${PWD}
+      git clone https://github.com/riscv/riscv-gnu-toolchain
+      cd riscv-gnu-toolchain
+      mkdir build 
+      cd build
+      ../configure --with-arch=rv32i --prefix=${ORIGIN_DIR}/rv32im
+      make -j$(nproc)
+      make install
+    - echo "RV32IM toolchain built successfully."
+
+rtl-bootloader:
+  stage: rtl-sim
+  tags:
+    - general-purpose:sequential
+  needs: ["caravel_user_project", "rv32im"]    
+  variables:
+    GIT_STRATEGY: none
+    GIT_CLEAN: none
+  script:
+    - echo "Running bootloader rtl (functional) simulation ..."
+    - |+
+      . ./venv/bin/activate
+      make CROSS=./rv32im/bin/riscv32-unknown-elf- -C ./verilog/bootloader_user_wrapper_wo_caravel/fw/app_02 firmware
+      make verify-bootloader_user_wrapper_wo_caravel-rtl
+    - echo "rtl (functional) simulation complete."
+
+rtl-pcpi-rv32im:
+  stage: rtl-sim
+  tags:
+    - general-purpose:sequential
+  needs: ["caravel_user_project", "rv32im"]    
+  variables:
+    GIT_STRATEGY: none
+    GIT_CLEAN: none
+  script:
+    - echo "Running bootloader with RV32IM pcpi modules rtl (functional) simulation ..."
+    - |+
+      . ./venv/bin/activate
+      make CROSS=./rv32im/bin/riscv32-unknown-elf- -C ./verilog/bootloader_user_wrapper_wo_caravel/fw/app_04 firmware
+      make verify-pcpi_bootloader_user_wrapper_wo_caravel-rtl
+    - echo "rtl (functional) simulation complete."
+
+rtl-pcpi-custom:
+  stage: rtl-sim
+  tags:
+    - general-purpose:sequential
+  needs: ["caravel_user_project", "rv32im"]    
+  variables:
+    GIT_STRATEGY: none
+    GIT_CLEAN: none
+  script:
+    - echo "Running bootloader with custom pcpi modules rtl (functional) simulation ..."
+    - |+
+      . ./venv/bin/activate
+      make CROSS=./rv32im/bin/riscv32-unknown-elf- -C ./verilog/bootloader_user_wrapper_wo_caravel/fw/app_05 firmware
+      make verify-pcpi_exact_approx_bootloader_user_wrapper_wo_caravel-rtl
+    - echo "rtl (functional) simulation complete."
+
 cpu:
   stage: harden
   tags:
     - general-purpose:sequential
-  needs: ["setup"]    
+  needs: ["rtl-bootloader", "rtl-pcpi-rv32im", "rtl-pcpi-custom"]
   variables:
     GIT_STRATEGY: none
     GIT_CLEAN: none
@@ -46,7 +115,7 @@ ctrl:
   stage: harden
   tags:
     - general-purpose:sequential
-  needs: ["setup"]    
+  needs: ["rtl-bootloader", "rtl-pcpi-rv32im", "rtl-pcpi-custom"]    
   variables:
     GIT_STRATEGY: none
     GIT_CLEAN: none
@@ -62,7 +131,7 @@ flash_controller:
   stage: harden
   tags:
     - general-purpose:sequential
-  needs: ["setup"]
+  needs: ["rtl-bootloader", "rtl-pcpi-rv32im", "rtl-pcpi-custom"]
   variables:
     GIT_STRATEGY: none
     GIT_CLEAN: none
@@ -78,7 +147,7 @@ gf180_ram_512x8x1:
   stage: harden
   tags:
     - general-purpose:sequential
-  needs: ["setup"]    
+  needs: ["rtl-bootloader", "rtl-pcpi-rv32im", "rtl-pcpi-custom"]
   variables:
     GIT_STRATEGY: none
     GIT_CLEAN: none
@@ -94,7 +163,7 @@ pcpi_approx_mul:
   stage: harden
   tags:
     - general-purpose:sequential
-  needs: ["setup"]    
+  needs: ["rtl-bootloader", "rtl-pcpi-rv32im", "rtl-pcpi-custom"]
   variables:
     GIT_STRATEGY: none
     GIT_CLEAN: none
@@ -110,7 +179,7 @@ pcpi_div:
   stage: harden
   tags:
     - general-purpose:sequential
-  needs: ["setup"]    
+  needs: ["rtl-bootloader", "rtl-pcpi-rv32im", "rtl-pcpi-custom"]
   variables:
     GIT_STRATEGY: none
     GIT_CLEAN: none
@@ -126,7 +195,7 @@ pcpi_exact_mul:
   stage: harden
   tags:
     - general-purpose:sequential
-  needs: ["setup"]    
+  needs: ["rtl-bootloader", "rtl-pcpi-rv32im", "rtl-pcpi-custom"]
   variables:
     GIT_STRATEGY: none
     GIT_CLEAN: none
@@ -142,7 +211,7 @@ pcpi_mul:
   stage: harden
   tags:
     - general-purpose:sequential
-  needs: ["setup"]    
+  needs: ["rtl-bootloader", "rtl-pcpi-rv32im", "rtl-pcpi-custom"]
   variables:
     GIT_STRATEGY: none
     GIT_CLEAN: none
@@ -158,7 +227,7 @@ simple_interconnect:
   stage: harden
   tags:
     - general-purpose:sequential
-  needs: ["setup"]    
+  needs: ["rtl-bootloader", "rtl-pcpi-rv32im", "rtl-pcpi-custom"]
   variables:
     GIT_STRATEGY: none
     GIT_CLEAN: none
@@ -174,7 +243,7 @@ uart:
   stage: harden
   tags:
     - general-purpose:sequential
-  needs: ["setup"]    
+  needs: ["rtl-bootloader", "rtl-pcpi-rv32im", "rtl-pcpi-custom"]
   variables:
     GIT_STRATEGY: none
     GIT_CLEAN: none
@@ -190,7 +259,7 @@ user_proj_example:
   stage: harden
   tags:
     - general-purpose:sequential
-  needs: ["setup"]    
+  needs: ["rtl-bootloader", "rtl-pcpi-rv32im", "rtl-pcpi-custom"]
   variables:
     GIT_STRATEGY: none
     GIT_CLEAN: none
