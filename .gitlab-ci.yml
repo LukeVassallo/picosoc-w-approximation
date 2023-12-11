@@ -230,18 +230,7 @@ user_project_wrapper:
   stage: integration
   tags:
     - general-purpose
-  needs:
-    job: cpu
-    job: ctrl
-    job: flash_controller
-    job: gf180_ram_512x8x1
-    job: pcpi_approx_mul
-    job: pcpi_div
-    job: pcpi_exact_mul
-    job: pcpi_mul
-    job: simple_interconnect
-    job: uart
-    job: user_proj_example
+  needs: ["cpu", "ctrl", "flash_controller", "gf180_ram_512x8x1", "pcpi_approx_mul", "pcpi_div", "pcpi_exact_mul", "pcpi_mul", "simple_interconnect", "uart", "user_proj_example"]
   variables:
     GIT_STRATEGY: none
     GIT_CLEAN: none
