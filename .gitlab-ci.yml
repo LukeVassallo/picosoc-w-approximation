@@ -46,6 +46,7 @@ rv32im:
       ../configure --with-arch=rv32i --prefix=${ORIGIN_DIR}/rv32im
       make -j$(nproc)
       make install
+      cd ../../
     - echo "RV32IM toolchain built successfully."
     - |+
       echo "Attempting to clean riscv-gnu-toolchain ..."
