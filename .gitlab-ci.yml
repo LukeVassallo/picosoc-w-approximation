@@ -51,10 +51,10 @@ rv32im:
       echo "Attempting to clean riscv-gnu-toolchain ..."
       if [ -d "riscv-gnu-toolchain" ]; then
         echo "Found, deleting."
-				rm -fr riscv-gnu-toolchain
-			else
-				echo "Not found, therefore nothing to clean."
-			fi
+        rm -fr riscv-gnu-toolchain
+      else
+        echo "Not found, therefore nothing to clean."
+      fi
 
 precheck:
   stage: setup
@@ -380,10 +380,10 @@ run_precheck:
       echo "Attempting to clean rv32im to prevent SPDX check failing ..."
       if [ -d "rv32im" ]; then
         echo "Found, deleting."
-				rm -fr rv32im
-			else
-				echo "Not found, therefore nothing to clean."
-			fi
+        rm -fr rv32im
+      else
+        echo "Not found, therefore nothing to clean."
+      fi
     - echo "Making precheck."
     - |+
       make run-precheck
