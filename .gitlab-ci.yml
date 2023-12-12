@@ -10,6 +10,7 @@ stages:
 - rtl-sim
 - harden
 - integration
+- gl-sim
 - precheck
 
 caravel_user_project:
@@ -46,6 +47,27 @@ rv32im:
       make -j$(nproc)
       make install
     - echo "RV32IM toolchain built successfully."
+    - |+
+      echo "Attempting to clean riscv-gnu-toolchain ..."
+      if [ -d "riscv-gnu-toolchain" ]; then
+        echo "Found, deleting."
+				rm -fr riscv-gnu-toolchain
+			else
+				echo "Not found, therefore nothing to clean."
+			fi
+
+precheck:
+  stage: setup
+  tags:
+    - general-purpose:sequential
+  variables:
+    GIT_STRATEGY: none
+    GIT_CLEAN: none
+  script:
+    - echo "Making precheck."
+    - |+
+      make precheck
+    - echo "Precheck build complete."
 
 rtl-bootloader:
   stage: rtl-sim
@@ -61,6 +83,7 @@ rtl-bootloader:
       . ./venv/bin/activate
       make CROSS=$PWD/rv32im/bin/riscv32-unknown-elf- -C ./verilog/dv/bootloader_user_wrapper_wo_caravel/fw/app_02 firmware
       make verify-bootloader_user_wrapper_wo_caravel-rtl
+      make CROSS=$PWD/rv32im/bin/riscv32-unknown-elf- -C ./verilog/dv/bootloader_user_wrapper_wo_caravel/fw/app_02 clean
     - echo "rtl (functional) simulation complete."
 
 rtl-pcpi-rv32im:
@@ -77,6 +100,7 @@ rtl-pcpi-rv32im:
       . ./venv/bin/activate
       make CROSS=$PWD/rv32im/bin/riscv32-unknown-elf- -C ./verilog/dv/pcpi_bootloader_user_wrapper_wo_caravel/fw/app_04 firmware
       make verify-pcpi_bootloader_user_wrapper_wo_caravel-rtl
+      make CROSS=$PWD/rv32im/bin/riscv32-unknown-elf- -C ./verilog/dv/pcpi_bootloader_user_wrapper_wo_caravel/fw/app_04 clean
     - echo "rtl (functional) simulation complete."
 
 rtl-pcpi-custom:
@@ -93,6 +117,7 @@ rtl-pcpi-custom:
       . ./venv/bin/activate
       make CROSS=$PWD/rv32im/bin/riscv32-unknown-elf- -C ./verilog/dv/pcpi_exact_approx_bootloader_user_wrapper_wo_caravel/fw/app_05 firmware
       make verify-pcpi_exact_approx_bootloader_user_wrapper_wo_caravel-rtl
+      make CROSS=$PWD/rv32im/bin/riscv32-unknown-elf- -C ./verilog/dv/pcpi_exact_approx_bootloader_user_wrapper_wo_caravel/fw/app_05 clean
     - echo "rtl (functional) simulation complete."
 
 cpu:
@@ -285,10 +310,10 @@ user_project_wrapper:
       # python3 -m venv venv
       . ./venv/bin/activate
       make user_proj_example
-    - echo "Hardening complete."  
+    - echo "Hardening complete."
 
-make_precheck:
-  stage: precheck
+gl-bootloader:
+  stage: gl-sim
   tags:
     - general-purpose:sequential
   needs: ["user_project_wrapper"]    
@@ -296,20 +321,53 @@ make_precheck:
     GIT_STRATEGY: none
     GIT_CLEAN: none
   script:
-    - echo "Setting up environment ... "
+    - echo "Running bootloader gl (gate-level) simulation ..."
     - |+
-      python3 -m venv venv
       . ./venv/bin/activate
-    - echo "Making precheck."
+      make CROSS=$PWD/rv32im/bin/riscv32-unknown-elf- -C ./verilog/dv/bootloader_user_wrapper_wo_caravel/fw/app_02 firmware
+      make verify-bootloader_user_wrapper_wo_caravel-gl
+      make CROSS=$PWD/rv32im/bin/riscv32-unknown-elf- -C ./verilog/dv/bootloader_user_wrapper_wo_caravel/fw/app_02 clean
+    - echo "gl (gate-level) simulation complete."
+
+gl-pcpi-rv32im:
+  stage: gl-sim
+  tags:
+    - general-purpose:sequential
+  needs: ["user_project_wrapper"]    
+  variables:
+    GIT_STRATEGY: none
+    GIT_CLEAN: none
+  script:
+    - echo "Running bootloader with RV32IM pcpi modules gl (gate-level) simulation ..."
     - |+
-      make precheck
-    - echo "Precheck build complete."
+      . ./venv/bin/activate
+      make CROSS=$PWD/rv32im/bin/riscv32-unknown-elf- -C ./verilog/dv/pcpi_bootloader_user_wrapper_wo_caravel/fw/app_04 firmware
+      make verify-pcpi_bootloader_user_wrapper_wo_caravel-gl
+      make CROSS=$PWD/rv32im/bin/riscv32-unknown-elf- -C ./verilog/dv/pcpi_bootloader_user_wrapper_wo_caravel/fw/app_04 clean
+    - echo "gl (gate-level) simulation complete."
+
+gl-pcpi-custom:
+  stage: gl-sim
+  tags:
+    - general-purpose:sequential
+  needs: ["user_project_wrapper"]    
+  variables:
+    GIT_STRATEGY: none
+    GIT_CLEAN: none
+  script:
+    - echo "Running bootloader with custom pcpi modules gl (gate-level) simulation ..."
+    - |+
+      . ./venv/bin/activate
+      make CROSS=$PWD/rv32im/bin/riscv32-unknown-elf- -C ./verilog/dv/pcpi_exact_approx_bootloader_user_wrapper_wo_caravel/fw/app_05 firmware
+      make verify-pcpi_exact_approx_bootloader_user_wrapper_wo_caravel-gl
+      make CROSS=$PWD/rv32im/bin/riscv32-unknown-elf- -C ./verilog/dv/pcpi_exact_approx_bootloader_user_wrapper_wo_caravel/fw/app_05 clean
+    - echo "gl (gate-level) simulation complete."
 
 run_precheck:
   stage: precheck
   tags:
     - general-purpose:sequential
-  needs: ["make_precheck"]    
+  needs: ["precheck", "user_project_wrapper", "gl-bootloader", "gl-pcpi-rv32im", "gl-pcpi-custom"]    
   variables:
     GIT_STRATEGY: none
     GIT_CLEAN: none
@@ -318,6 +376,14 @@ run_precheck:
     - |+
       python3 -m venv venv
       . ./venv/bin/activate
+    - |+
+      echo "Attempting to clean rv32im to prevent SPDX check failing ..."
+      if [ -d "rv32im" ]; then
+        echo "Found, deleting."
+				rm -fr rv32im
+			else
+				echo "Not found, therefore nothing to clean."
+			fi
     - echo "Making precheck."
     - |+
       make run-precheck
