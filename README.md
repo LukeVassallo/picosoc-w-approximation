@@ -19,7 +19,7 @@ Below is a block diagram of the SoC and the architecture of the SIMD multpliers.
 Approximate computing involves sacrificing computational accuracy for gains in speed, power, and area efficiency. Approximate circuits, by utilizing fewer components, may occasionally produce inaccurate outputs, resulting in simpler implementation. This technology finds application in scenarios where a certain degree of error in the output is acceptable, such as video signals intended for human consumption.
 
 # Extension Architecture
-The extension modules are nearly identical and only differ in the type of multipliers that are instantiated inside. The exact module uses exact multipliers, while the approximate module uses approximate multipliers. The approximate multipliers have a Mean Error Distance (MED) of 14.25 and a 59.57% probability of generating a correct output. Due to this inaccuracy, the 16-bit output is equivalent to 11.29 bits. In exchange for this loss of accuracy, the circuit is 14% smaller and consumes 10% less energy than its exact counterpart.  All multiplier circuits operate on signed data in two's complement format. 
+The extension modules are nearly identical and only differ in the type of multipliers that are instantiated inside. The exact module uses exact multipliers, while the approximate module uses approximate multipliers [1]. The approximate multipliers have a Mean Error Distance (MED) of 14.25 and a 59.57% probability of generating a correct output. Due to this inaccuracy, the 16-bit output is equivalent to 11.29 bits. In exchange for this loss of accuracy, the circuit is 14% smaller and consumes 10% less energy than its exact counterpart.  All multiplier circuits operate on signed data in two's complement format. 
 
 The two modules are interfaced to [PicoRV32](https://github.com/YosysHQ/picorv32) via the Pico Co-Processor Interface (PCPI) which makes available two input registers, respectively `rs1` and `rs2`, and one output register, `rd`. This section provides a brief description of the module and the setting up of a custom instruction that can perform three operations for each SIMD module for a total of six new instructions.
 
@@ -51,17 +51,18 @@ Again concerning Figure 4, the contents of `funct3` determine how the results of
 </figure>
 
 # Reproducing this Work
-This project has some research applicability in approximate computing. The main goal was to combine scalar processors with custom acceleators and have great felxibility in the design process. For me this means that I can quickly simulate, FPGA test and tape-out an ASIC. This repository offers, in a nutshell:
-- Compile assembly or C application code targeting the SoC.
-- Simulate the SoC with custom application and view waveforms.
+This project has research applicability in approximate computing. The main goal was to combine scalar processors with custom acceleators and have great flexibility in the design process. For me this means that I can quickly simulate, FPGA test and tape-out an ASIC. This repository offers, in a nutshell:
+- Compile assembly or C application code targeting custom PCPI co-processors.
+- Simulate the SoC with user application and view detailed waveforms.
 - Implement the SoC on a Xilinx SoC using proprietary or open-source toolchain.
 - Harden the individual macros (block) using OpenLane. 
-- Integrate the macros and generate GDSII layout files. 
+- Integrate the macros, perform gate-level simulation and generate GDSII layout files. 
 
 ## Application Code
 The application code (see yellow block in Figure 5) contains two programs: a) a bootloader and b) a test application that utilises inline assembly to issue custom instructions to the SIMD peripherals. 
 
 ## Simulation 
+The simulation instantiates the `user_project_wrapper` (without caravel) in a testbench and performs functional/gate-level simulations that reflects real-world operating conditions. A model for an external QSPI flash memory chip is instantiated inside the testbench and the user application code is loaded onto it. The serial port is monitored to capture application output, while all internal signals can be viewed with a viewer such as gtkwave. 
 
 <figure style="display:inline-block;" >
 <img src="./.figs/soc-simulation-w-caravel.png" alt="DBlock diagram of the simulation setup. The yellow block uses RISCV toolchain to compile the user application, the contents of the blue box represent hardware platform build upon picosoc, the red block encapsulates the user's design inside caravel, and finally the green block shows the design in the simulation environment." style="vertical-align:top;">
@@ -69,12 +70,23 @@ The application code (see yellow block in Figure 5) contains two programs: a) a 
 </figure>
 
 ## FPGA Emulation
-### Full System
+The top-level design, `user_project_wrapper`, is emulated on a small Xilinx FPGA. The on-chip SRAM memory that is implemented using four Global Foundries 512KiB SRAM macros is replaced with a block memory of equivalent size and width, that is 2KiB memory with a 32-bit data bus and 9-bit address bus. Two test implementations are available that facilitate testing:
+1. The flash controller is unused and the code is executed from the data memory. This method of operation is obtained by modifying the processor's entry point on reset and subsequently guiding the linker to place program and data sections in data memory.
+2. The user application is flashed onto an external QSPI flash and attached to the FPGA via a PMOD connector. 
 
 ### Excluding External Flash (Data Memory is pre-loaded)
 
-## Tapeout with eFabless and GF180 PDK
+### Full System
 
+## Tapeout with eFabless and GF180 PDK
+|     |     |
+| --- | --- |
+| ![floorplan](.figs/floorplan.png) | ![floorplan](.figs/floorplan-w-congestion-heat-map.png) |
+| Fig a) Chip Floorplan showing all macros (see below for detailed description) | Fig b) Chip floorplan overlayed with routing congestion heatmap |
+
+Figure a shows the Chip's floorplan. At the bottom is the macro `user_proj_example` which is the example design that implements a counter controlled by Carvel's PicoRV32 over wishbone and the internal logic analyser. Centre-left are the four 512-byte SRAM cells that collectively provide the processor with 2KiB of memory over a 32-bit bus. At the top left is the flash controller, UART and interconnect that connects the CPU to memory and Input/Output (IO) (flash controller, UART and GPIO). The processor is placed in the centre and is the largest macro in the design. Adjacent to the processor on the right are four PCPI co-processors. starting from the top these are: approximate SIMD multiplier, exact SIMD multiplier, RISCV32-IM Divider and RISCV32-IM Multiplier. The remaining macro on the right contains a reset synchroniser and provides the design with synchronous active-high and active-low reset signals. In Figure b, it is evident that a lot of routing resources are taken in the vicinity of the interconnect and between the CPU and PCPI modules. The shared bus interconnect topology seems to be the cause for this congestion, and is not problematic for this design, because there is plenty of free layout area.
 
 # Acknowledgements
 I would like to thank David Mitchell Bailey for being patient with me and assisting me with the OEB and LVS checks in the mpwprecheck. I would also like to thank [Prof. Dr. Nima TaheriNejad](https://nima.eclectx.org/) for providing the source code for the exact and approximate multipliers, and Pouria Hasani for insightful conversations relating to hardware-software integration.
+
+[1] N. Amirafshar, A. S. Baroughi, H. S. Shahhoseini and N. TaheriNejad, "An Approximate Carry  Disregard Multiplier with Improved Mean Relative Error Distance and Probability of Correctness," *2022 25th Euromicro Conference on Digital System Design (DSD), Maspalomas*, Spain, 2022, pp. 46-52, doi: 10.1109/DSD57027.2022.00016.
