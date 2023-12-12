@@ -8,6 +8,7 @@
 stages:
 - setup
 - rtl-sim
+- emulation
 - harden
 - integration
 - gl-sim
@@ -120,6 +121,25 @@ rtl-pcpi-custom:
       make verify-pcpi_exact_approx_bootloader_user_wrapper_wo_caravel-rtl
       make CROSS=$PWD/rv32im/bin/riscv32-unknown-elf- -C ./verilog/dv/pcpi_exact_approx_bootloader_user_wrapper_wo_caravel/fw/app_05 clean
     - echo "rtl (functional) simulation complete."
+
+simulation:
+  stage: emulation
+  tags:
+    - general-purpose:sequential
+  needs: ["rtl-bootloader", "rtl-pcpi-rv32im", "rtl-pcpi-custom"]    
+  variables:
+    GIT_STRATEGY: none
+    GIT_CLEAN: none  
+  script:
+    - |+
+      echo "Sourcing AMD-Xilinx FPGA tools ..."
+      . /tools/Xilinx/Vivado/2023.1/settings64.sh
+      vivado -version 
+    - |+
+      echo "Building ..."
+      cd fpga
+      make simulation
+    - echo "Build complete."  
 
 cpu:
   stage: harden
