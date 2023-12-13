@@ -70,9 +70,23 @@ The simulation instantiates the `user_project_wrapper` (without caravel) in a te
 </figure>
 
 ## FPGA Emulation
+*Note: Don't forget to setup the toolchains before running any `make` commands!*
+
 The top-level design, `user_project_wrapper`, is emulated on a small Xilinx FPGA. The on-chip SRAM memory that is implemented using four Global Foundries 512KiB SRAM macros is replaced with a block memory of equivalent size and width, that is 2KiB memory with a 32-bit data bus and 9-bit address bus. Two test implementations are available that facilitate testing:
 1. The flash controller is unused and the code is executed from the data memory. This method of operation is obtained by modifying the processor's entry point on reset and subsequently guiding the linker to place program and data sections in data memory.
 2. The user application is flashed onto an external QSPI flash and attached to the FPGA via a PMOD connector. 
+
+|     |     |
+| --- | --- |
+| ![FPGA emulation without external flash memory](.figs/fpga-emulation-wo-flash.png) | ![FPGA emulation with external flash memory](.figs/fpga-emulation-w-flash.png) |
+| Fig a) FPGA emulation without external flash memory | Fig b) FPGA emulation with external flash memory |
+
+The two projects are located at `fpga/emulation`. To generate the bitstream simply change into the `fpga` directory and run `make emulation-wo-flash` to build the design that runs solely from BRAM. Alternatively run `make emulation-w-flash` to generate the bitstream for the design required an external flash memory on PMOD A programmed with the firmaware. To build both projects simultaneously:
+
+``` bash
+cd fpga
+make -j2 emulation
+```
 
 ### Excluding External Flash (Data Memory is pre-loaded)
 
@@ -85,6 +99,50 @@ The top-level design, `user_project_wrapper`, is emulated on a small Xilinx FPGA
 | Fig a) Chip Floorplan showing all macros (see below for detailed description) | Fig b) Chip floorplan overlayed with routing congestion heatmap |
 
 Figure a shows the Chip's floorplan. At the bottom is the macro `user_proj_example` which is the example design that implements a counter controlled by Carvel's PicoRV32 over wishbone and the internal logic analyser. Centre-left are the four 512-byte SRAM cells that collectively provide the processor with 2KiB of memory over a 32-bit bus. At the top left is the flash controller, UART and interconnect that connects the CPU to memory and Input/Output (IO) (flash controller, UART and GPIO). The processor is placed in the centre and is the largest macro in the design. Adjacent to the processor on the right are four PCPI co-processors. starting from the top these are: approximate SIMD multiplier, exact SIMD multiplier, RISCV32-IM Divider and RISCV32-IM Multiplier. The remaining macro on the right contains a reset synchroniser and provides the design with synchronous active-high and active-low reset signals. In Figure b, it is evident that a lot of routing resources are taken in the vicinity of the interconnect and between the CPU and PCPI modules. The shared bus interconnect topology seems to be the cause for this congestion, and is not problematic for this design, because there is plenty of free layout area.
+
+# Toolchain Setup
+In this section I briefly describe how to setup the toolchains required for compiling code that is not part of the openlane flow. The toolchains are needed to compile user application firmware and perform FPGA emulation. 
+
+## Risc-V IM toolchain
+We need the riscv toolchain with support of the M-extention. Here's how to compile it and make it available on the command line. 
+```bash
+# Setup some variables
+ORIGIN_DIR=${PWD}
+INSTALL_DIR=${ORIGIN_DIR}/rv32im
+
+# Obtain the source code
+git clone https://github.com/riscv/riscv-gnu-toolchain && cd riscv-gnu-toolchain
+
+# Configure to install the RISCV32-IM toolchain 
+mkdir build && cd build
+../configure --with-arch=rv32im --prefix=${INSTALL_DIR}/rv32im
+
+# Compile 
+make -j$(nproc)
+
+# Install
+make install
+cd ../../
+
+# Remove the repository (optional)
+rm -fr riscv-gnu-toolchain
+
+# Make toolchain available on PATH
+export PATH=$PATH:${INSTALL_DIR}
+
+```
+
+## Vivado 2023.1
+Please refer to AMD's website to download the [Vitis Unified Toolchain - 2023.1](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2023-1.html) and [UG910 Vivado Design Suite User Guide](https://docs.xilinx.com/r/2023.1-English/ug910-vivado-getting-started) for installation.
+
+After installation don't forget to source the settings script so that xilinx tools are available at the command line (typically they are installed under `/tools` or `/opt`):
+```bash
+source /tools/Xilinx/Vivado/2023.1/settings64.sh
+
+# verify 
+vivado -version
+```
+## Yosys and NextPNR (XILINX)
 
 # Acknowledgements
 I would like to thank David Mitchell Bailey for being patient with me and assisting me with the OEB and LVS checks in the mpwprecheck. I would also like to thank [Prof. Dr. Nima TaheriNejad](https://nima.eclectx.org/) for providing the source code for the exact and approximate multipliers, and Pouria Hasani for insightful conversations relating to hardware-software integration.

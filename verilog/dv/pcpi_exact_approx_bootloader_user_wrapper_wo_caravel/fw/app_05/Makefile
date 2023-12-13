@@ -52,8 +52,8 @@ firmware: build/bootloader/bootloader.elf build/app/app.elf
 	$(CROSS)objcopy build/app/app.elf -O verilog ./bin/app.hex
 	@cat bin/bootloader.hex bin/app.hex > bin/firmware.hex
 
-	$(CROSS)objcopy build/bootloader/bootloader.elf --pad-to=0x4000 --gap-fill=0x00 -O verilog ./bin/bootloader.bin
-	$(CROSS)objcopy build/app/app.elf -O verilog ./bin/app.bin
+	$(CROSS)objcopy build/bootloader/bootloader.elf --pad-to=0x4000 --gap-fill=0x00 -O binary ./bin/bootloader.bin
+	$(CROSS)objcopy build/app/app.elf -O binary ./bin/app.bin
 	@cat bin/bootloader.bin bin/app.bin > bin/firmware.bin
 
 	# TODO: TEST ON FPGA!
