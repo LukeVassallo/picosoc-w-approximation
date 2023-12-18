@@ -153,4 +153,4 @@ module counter #(
     end
 
 endmodule
-`default_nettype wire
+//`default_nettype wire

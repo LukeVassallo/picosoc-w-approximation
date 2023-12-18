@@ -156,9 +156,8 @@ preinit-memory:
       vivado -version 
     - |+
       echo "Building ..."
-      cd fpga
-      make simulation
-    - echo "Build complete."  
+      make CROSS=$PWD/rv32im/bin/riscv32-unknown-elf- -C fpga/emulation/01_wo_external_flash all
+    - echo "Build complete."
 
 external-flash:
   stage: emulation

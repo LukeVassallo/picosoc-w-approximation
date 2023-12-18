@@ -505,4 +505,4 @@ module picosoc_mem #(
 	end
 endmodule
 
-`default_nettype wire
+//`default_nettype wire

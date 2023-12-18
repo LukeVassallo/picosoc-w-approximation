@@ -468,4 +468,4 @@ user_proj_example user_proj_example_inst_0 (
 
 endmodule	// user_project_wrapper
 
-`default_nettype wire
+//`default_nettype wire

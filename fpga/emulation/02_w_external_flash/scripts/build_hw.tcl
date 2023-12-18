@@ -17,6 +17,7 @@ create_project -part $partNumber $projectName $outputdir
 # Add source files 
 add_files hdl/arty_35t.v
 add_files hdl/user_project_wrapper.v
+add_files hdl/user_proj_example.v
 add_files ../../../verilog/rtl/cpu.v
 add_files ../../../verilog/rtl/picorv32.v
 add_files ../../../verilog/rtl/simpleuart.v
@@ -30,7 +31,6 @@ add_files ../../../verilog/rtl/pcpi_approx_mul.v
 add_files ../../../verilog/rtl/SCDM8_51.v
 add_files ../../../verilog/rtl/S_Exact8.v
 add_files ../../../verilog/rtl/scdm_common.v
-add_files ../../../verilog/rtl/user_proj_example.v
 
 # Add simulation files
 add_files -fileset sim_1 tb/w25q128.v
