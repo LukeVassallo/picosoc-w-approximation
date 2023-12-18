@@ -15,6 +15,31 @@ Below is a block diagram of the SoC and the architecture of the SIMD multpliers.
 <figcaption style="text-align:center;"><br>Fig.1 - System on Chip (SoC) block diagram illustrating vanilla picorv32 together with SIMD exact and approximate multiplier extensions.</figcaption>
 </figure>
 
+# Integrated Circuit Pinouts
+
+| Pin(s) | Description | Direction |
+| --- | --- | --- |
+| 7:0 | counter outputs | Output |
+| 8   | clock input | Input |
+| 9   | active low asynchronous reset | Input |
+| 10  | QSPI Flash Chip Select | Output |
+| 11  | QSPI Flash Clock | Output |
+| 15:12 | QSPI Flash Input/Output | Bi-directional |
+| 16  | UART TX | Output |
+| 17  | UART RX | Input |
+| 21:18 | PICORV Interrupt Request (IRQ) | Input |
+| 37:22 | GPIO | Output |
+
+# Memory map:
+
+| Address Range | Description |
+| --- | --- |
+| 0x00000000 .. 0x00FFFFFF | Internal SRAM |
+| 0x01000000 .. 0x01FFFFFF | External Serial Flash |
+| 0x02000000 .. 0x02000003 | SPI Flash Controller Config Register |
+| 0x02000004 .. 0x02000007 | UART Clock Divider Register |
+| 0x02000008 .. 0x0200000B | UART Send/Recv Data Register |
+
 ## Approximate Computing 
 Approximate computing involves sacrificing computational accuracy for gains in speed, power, and area efficiency. Approximate circuits, by utilizing fewer components, may occasionally produce inaccurate outputs, resulting in simpler implementation. This technology finds application in scenarios where a certain degree of error in the output is acceptable, such as video signals intended for human consumption.
 
