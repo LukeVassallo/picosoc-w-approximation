@@ -1,4 +1,5 @@
 # Picosoc with Approximate SIMD Extension
+![](https://gitlab.lukevassallo.com/luke/picosoc-w-approximation/badges/main/pipeline.svg)
 
 Please see the same project on my [GitLab](https://gitlab.lukevassallo.com/luke/picosoc-w-approximation) since this one is missing the images.
 
@@ -15,7 +16,7 @@ Below is a block diagram of the SoC and the architecture of the SIMD multpliers.
 <figcaption style="text-align:center;"><br>Fig.1 - System on Chip (SoC) block diagram illustrating vanilla picorv32 together with SIMD exact and approximate multiplier extensions.</figcaption>
 </figure>
 
-# Integrated Circuit Pinouts
+## Integrated Circuit Pinouts
 
 | Pin(s) | Description | Direction |
 | --- | --- | --- |
@@ -30,7 +31,7 @@ Below is a block diagram of the SoC and the architecture of the SIMD multpliers.
 | 21:18 | PICORV Interrupt Request (IRQ) | Input |
 | 37:22 | GPIO | Output |
 
-# Memory map:
+## Memory map
 
 | Address Range | Description |
 | --- | --- |
@@ -40,7 +41,7 @@ Below is a block diagram of the SoC and the architecture of the SIMD multpliers.
 | 0x02000004 .. 0x02000007 | UART Clock Divider Register |
 | 0x02000008 .. 0x0200000B | UART Send/Recv Data Register |
 
-## Approximate Computing 
+# Approximate Computing 
 Approximate computing involves sacrificing computational accuracy for gains in speed, power, and area efficiency. Approximate circuits, by utilizing fewer components, may occasionally produce inaccurate outputs, resulting in simpler implementation. This technology finds application in scenarios where a certain degree of error in the output is acceptable, such as video signals intended for human consumption.
 
 # Extension Architecture
@@ -106,7 +107,7 @@ The top-level design, `user_project_wrapper`, is emulated on a small Xilinx FPGA
 | ![FPGA emulation without external flash memory](.figs/fpga-emulation-wo-flash.png) | ![FPGA emulation with external flash memory](.figs/fpga-emulation-w-flash.png) |
 | Fig a) FPGA emulation without external flash memory | Fig b) FPGA emulation with external flash memory |
 
-The two projects are located at `fpga/emulation`. To generate the bitstream simply change into the `fpga` directory and run `make emulation-wo-flash` to build the design that runs solely from BRAM. Alternatively run `make emulation-w-flash` to generate the bitstream for the design required an external flash memory on PMOD A programmed with the firmaware. To build both projects simultaneously:
+The two projects are located at `fpga/emulation`. To generate the bitstream simply change into the `fpga` directory and run `make emulation` to build both projects simultaneously:
 
 ``` bash
 cd fpga
@@ -114,8 +115,20 @@ make -j2 emulation
 ```
 
 ### Excluding External Flash (Data Memory is pre-loaded)
+To build the project that runs solely from BRAM, use: 
+``` bash
+cd fpga/emulation/01_wo_external_flash/
+make all
+```
+This generates the bitstream with block ram memory pre-initialised with program code.   
 
 ### Full System
+Alternatively to build the full project with the external flash: 
+``` bash
+cd fpga/emulation/02_w_external_flash/
+make all
+```
+Which will generate the bitstream for the design. Note that an external flash memory on PMOD A programmed with the firmaware is required.
 
 ## Tapeout with eFabless and GF180 PDK
 |     |     |
