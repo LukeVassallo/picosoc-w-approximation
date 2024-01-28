@@ -1,8 +1,6 @@
 # Picosoc with Approximate SIMD Extension
 ![](https://gitlab.lukevassallo.com/luke/picosoc-w-approximation/badges/main/pipeline.svg)
 
-Please see the same project on my [GitLab](https://gitlab.lukevassallo.com/luke/picosoc-w-approximation) since this one is missing the images.
-
 [toc]
 
 # Overview
@@ -180,9 +178,3 @@ source /tools/Xilinx/Vivado/2023.1/settings64.sh
 # verify 
 vivado -version
 ```
-## Yosys and NextPNR (XILINX)
-
-# Acknowledgements
-I would like to thank David Mitchell Bailey for being patient with me and assisting me with the OEB and LVS checks in the mpwprecheck. I would also like to thank [Prof. Dr. Nima TaheriNejad](https://nima.eclectx.org/) for providing the source code for the exact and approximate multipliers, and Pouria Hasani for insightful conversations relating to hardware-software integration.
-
-[1] N. Amirafshar, A. S. Baroughi, H. S. Shahhoseini and N. TaheriNejad, "An Approximate Carry  Disregard Multiplier with Improved Mean Relative Error Distance and Probability of Correctness," *2022 25th Euromicro Conference on Digital System Design (DSD), Maspalomas*, Spain, 2022, pp. 46-52, doi: 10.1109/DSD57027.2022.00016.
